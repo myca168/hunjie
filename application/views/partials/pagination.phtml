@@ -1,0 +1,56 @@
+<?php if(empty($this->pageTitle)) $this->pageTitle = 'page';?>
+<?php if ($this->pageCount): ?>
+	<div class="pagination">
+	<!-- First page link -->
+	<?php if (isset($this->previous)): ?>
+  		<a href="<?php echo $this->url(array($this->pageTitle  => $this->first)); ?>">
+    	第一页
+  		</a> |
+	<?php else: ?>
+  		<span class="disabled">第一页</span> |
+	<?php endif; ?>
+
+	<!-- Previous page link -->
+	<?php if (isset($this->previous)): ?>
+  		<a href="<?php echo $this->url(array($this->pageTitle  => $this->previous)); ?>">
+    	&lt; 上一页
+  		</a> |
+	<?php else: ?>
+  		<span class="disabled">&lt; 上一页</span> |
+	<?php endif; ?>
+	
+	<!-- position -->
+	<?php echo $this->firstItemNumber; ?> - <?php echo $this->lastItemNumber; ?>
+	    of <?php echo $this->totalItemCount; ?>
+
+	<!-- Next page link -->
+	<?php if (isset($this->next)): ?>
+  		| <a href="<?php echo $this->url(array($this->pageTitle => $this->next)); ?>">
+    	下一页 &gt;
+  		</a> |
+	<?php else: ?>
+  		| <span class="disabled">下一页 &gt;</span> |
+	<?php endif; ?>
+
+	<!-- Last page link -->
+	<?php if (isset($this->next)): ?>
+  		<a href="<?php echo $this->url(array($this->pageTitle  => $this->last)); ?>">
+    	末页
+  		</a>
+	<?php else: ?>
+  		<span class="disabled">末页</span>
+	<?php endif; ?>
+    
+    <?php if ($this->pageCount): ?>
+       <select onChange="window.location=$(this).val();" id="paginationControl_<?php echo $this->pageTitle; ?>" size="1">
+       <?php foreach ($this->pagesInRange as $page): ?>
+          <?php $selected = ($page == $this->current) ? ' selected="selected"' : ''; ?>
+             <option value="<?php
+                echo $this->url(array($this->pageTitle  => $page));?>"<?php echo $selected ?>>
+                <?php echo $page; ?>
+            </option>
+      <?php endforeach; ?>
+     </select>
+     <?php endif; ?>    
+    </div>
+<?php endif; ?>

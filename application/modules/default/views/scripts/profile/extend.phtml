@@ -1,0 +1,92 @@
+<?php 
+$this->menutitle="档案资料";
+$this->left=$this->profile();
+
+?>
+<br/>
+<br/>
+
+<?php 
+$flag1=false;
+$flag2=false;
+	$id=Zend_Auth::getInstance()->getIdentity ()->id;
+	$role=Zend_Auth::getInstance()->getIdentity ()->role_id;
+	$obj=Model_Member::getUserById($id);
+	$arr=array(
+			Caclass_Acl::ROLE_BILLING,
+			Caclass_Acl::ROLE_MANAGER,
+			Caclass_Acl::ROLE_ADMIN,
+			Caclass_Acl::ROLE_AGENT,
+			);
+	if (in_array($role, $arr)){
+		$flag1=true;
+	} 
+	if ($role==Caclass_Acl::ROLE_USER && $obj->agent_id!=0 ) {
+		$flag2=true;
+	}
+	if ($flag1 || $flag2) {
+		echo "<span class='alert'>延期模块仅供一般会员使用，婚介机构会员请与您的婚介办公室联系！</span>";
+	}
+	else {
+
+echo "<span class='alert'>温馨提示：延期模块可以使用Paypal付款. 谢谢！</span>";
+
+echo "<br/><br/><div class='pre_info'>请选择：</div>";
+
+echo $this->form;
+
+}
+?>
+
+<?php if (!$flag2):?>
+
+<br/><br/>
+<div class="hastable">
+<?php echo "近期广告记录： 会员ID：{$this->user->id}, 会员姓名：{$this->user->lname} {$this->user->name}";?>
+<table cellspacing="0">
+	  <thead>
+		<tr>
+		<td width="10%">广告 ID</td>
+		<td width="12%">起始日期</td>
+		<td width="12%">截止日期</td>
+		<td width="12%">订单日期</td>
+		<td width="10%">月数</td>
+		<td width="10%">金额</td>
+		<td width='10%'>付款</td>
+		<td>操作</td>
+		</tr>
+	  </thead>
+	  <tbody>
+		<?php foreach ($this->rows as $i=>$row): ?>
+		  <tr>
+		     
+		    <td><?php echo $this->escape($row->id); ?></td> 
+		    <td><?php echo $this->escape($row->start_date); ?></td> 
+		    <td><?php echo $this->escape($row->end_date); ?>
+		    </td> 
+		    <td> <?php echo $row->inv_date ?></td> 
+		    <td> <?php echo Model_Rate::getName($row->unit); ?></td> 
+		    <td> <?php echo $row->amt ?></td> 
+		    <td> 
+		    <?php
+		    if ($row->paid_flag==0) {
+		    	echo "未付";
+		    } else {echo "已付";}
+		    ?>
+		    </td> 
+		    
+		    <td></td>
+		  </tr>
+		<?php endforeach; ?>
+	  </tbody>
+	</table><br/>
+</div>
+
+<style>
+.hastable table tr td {
+text-align:center;
+}	
+	
+</style>
+<?php endif;?>
+

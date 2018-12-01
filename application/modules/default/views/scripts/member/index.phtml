@@ -1,0 +1,178 @@
+<?php $this->headTitle('佳丽婚介 - 会员登记'); ?>
+
+<div class="unit unit2">
+<div class="title" style=""><span class="titletext">新会员登记说明</span></div>
+<div class="unit_bc">
+<div class="module">
+
+我们是诚信严谨的婚介机构，要求会员认真对待爱情婚姻，所以佳丽婚介网采取认证制以保证登载的信息是真实可靠！ 
+<a target='_blank' href='/member/new'>【新会员在线登记】</a><br/>
+<br/>
+若注册过程有任何问题，请联系郑生（Tel:1-647-891-2966,Email:hunjie.ca@gmail.com）。
+
+<br/>
+<br/>
+若您也考虑在天涯信息网(<a target='_blank' href='http://www.myca168.com'>www.myca168.com</a>)
+免费登载征婚广告，请在此注册/发布广告：
+<a target='_blank' href='http://www.myca168.com/yellowpage/list/id/158'>
+【免费征婚广告】</a>
+
+<br/><br/>
+<?php 
+	$url=$this->baseUrl()."/uploads/form.xlsx";
+		echo "婚介所会员: &nbsp;<a target='_blank' href='$url'>"."申请表下载"."</a>";
+	?>
+
+</div>
+</div>
+</div>
+
+<?php 
+$obj=new Model_Member();
+$rows=$obj->getRecent(12);
+
+?>
+
+<div class='cls'></div>
+
+<span class='reco1'>
+<img src="/images/caclass/reco1.gif">
+</span>
+
+<div class='icons_box'>
+
+<?php if (count($rows)!=0)
+	
+	foreach ($rows as $k=>$row) {
+        $dir="upload_img/ids/{$row->id}.jpg";
+        if (file_exists($dir)) {
+     //    die('here');
+
+		$imgUrl='/'.$dir;	
+		} else if ($row->sex==1) {
+			$imgUrl=$this->baseUrl()."/images/caclass/".'man.jpg';
+		} else {
+			
+          $imgUrl=$this->baseUrl()."/images/caclass/".'girl.jpg';
+		}
+		
+		$Url='/index/show/id/'.$row->id;
+		
+/*
+		list($width, $height, $type, $attr) = getimagesize(ROOT.'/public'.$imgUrl);
+		$thumbWidth=149;
+      	// calculate thumbnail size
+      	$new_width = $thumbWidth;
+	 	if ($width!=0) {
+      	$new_height = floor( $height * ( $thumbWidth / $width ) );
+      	} else { $new_height=0;$new_width=0;}
+*/
+      	$name='';
+      	$nation=Model_Country::getName($row->nationality);
+      	if ($nation) {
+      		$name.="国籍：$nation";
+      	}
+		
+		$sex=Model_Sex::getName($row->sex);
+		if ($sex) {
+			$name.='， 性别：'.$sex;
+		}
+		$name.="， 身高(cm)：$row->height";
+		
+		$date = new DateTime($row->birth);
+		$now = new DateTime();
+		$interval = $now->diff($date);
+		
+		$name.="， 年龄：$interval->y";
+		$education=Model_Education::getName($row->edu);
+		if ($education) {
+			$name.="， 学历：$education";
+		}
+		
+		echo "<div class='icons'>
+		<a href='$Url' target='_blank'>
+		<img title='$name' src='$imgUrl' width='150' height='150' border='0' />
+		</a>
+		<br/><div class='icons_desc'>
+		{$interval->y}岁 国籍：$nation</div>
+		
+		<a href='$Url' target='_blank'>
+		<img src='/images/caclass/more.jpg'/>
+		</a>
+		
+		</div>";
+	}
+?>
+
+</div>
+
+<style>
+
+#bd {
+padding:5px;
+}
+.module{
+/ * font-size:16px;
+*/}
+
+.module a{
+ color: blue;
+}
+
+
+.seek_tb {
+margin-top:10px;
+width:700px;
+border:1px solid #F7EBC2; 
+text-align:left;
+color:grey;
+display: table-cell;
+vertical-align: middle;
+}
+
+.seek_tb td {
+padding:20px;
+}
+
+.notall {
+background:url(/images/caclass/search.jpg) no-repeat;
+width:170px;
+height:27px;
+text-align: center;
+color:white;
+}
+
+.icons_desc{
+margin:5px 0 3px 0;
+color:#9F330E;
+}
+
+.searchBox {
+margin-top:10px;
+}
+
+.icons_box {
+width:930px;
+float:right;
+margin-top:15px;
+}
+
+.icons {
+float:left;
+border:1px solid #F7EBC2; 
+magin-right:1px;
+text-align:center;
+}
+
+.reco1 img{
+padding:13px 0 0 0;
+float:left;
+}
+
+
+
+
+
+
+</style>
+

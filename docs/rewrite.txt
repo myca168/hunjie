@@ -1,0 +1,17 @@
+# development, testing, production
+SetEnv APPLICATION_ENV production
+
+# php_value session.path 
+# php_value session.cookie_domain 
+
+# turn rewriting on
+RewriteEngine on
+
+RewriteRule ^.*\.(js|ico|gif|jpg|png|css|html)$ - [NC,L]
+
+# if using inside .htaccess or directory tag, removed %{DOCUMENT_ROOT}
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} -f [OR]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} -l [OR]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^.*$ /index.php [NC,L]

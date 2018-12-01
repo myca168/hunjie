@@ -1,0 +1,336 @@
+<?php $this->headTitle('佳丽婚介,交友,海外征婚,Dating'); ?>
+
+<?php if (count($this->images)>10): ?>
+<div class='frame'>
+
+    <ul id="gallery">
+    <?php foreach ($this->images as $img): ?>
+    <?php 
+    $cn=Model_Country::getName($img->nationality);
+    $edu=Model_Education::getName($img->edu);
+    $height=$img->height;
+    $file=$img->id.'.jpg';
+    ?>
+    <li class="loaded">
+       <a href="#">
+      <?php   
+        echo "<img src='upload_img/ids/$file' title='国籍：$cn 学历：$edu 身高：$height cm 点击查看'/>";
+      ?></a>
+    </li>
+    <?php endforeach; ?>
+    
+     <!-- 
+    <li class="loaded">
+        <a href="#">
+        	<img src="upload_img/demo/1.jpg" title="国籍：加拿大  学历：本科 身高：178cm 点击查看">
+    	</a>
+    </li>	
+      <li class="loaded">
+        <a href="#">
+        	<img src="upload_img/demo/2.jpg" title="国籍：加拿大  学历：本科 身高：178cm 点击查看">
+    	</a>
+    </li>	
+      <li class="loaded">
+        <a href="#">
+        	<img src="upload_img/demo/3.jpg" title="国籍：加拿大  学历：本科 身高：178cm 点击查看">
+    	</a>
+    </li>
+        <li class="loaded">
+        <a href="#">
+        	<img src="upload_img/demo/4.jpg" title="国籍：加拿大  学历：本科 身高：178cm 点击查看">
+    	</a>
+    </li>
+    	
+      <li class="loaded">
+        <a href="#">
+        	<img src="upload_img/demo/5.jpg" title="国籍：加拿大  学历：本科 身高：178cm 点击查看">
+    	</a>
+    </li>	
+      <li class="loaded">
+        <a href="#">
+        	<img src="upload_img/demo/6.jpg" title="国籍：加拿大  学历：本科 身高：178cm 点击查看">
+    	</a>
+    </li>
+       <li class="loaded">
+        <a href="#">
+        	<img src="upload_img/demo/7.jpg" title="国籍：加拿大  学历：本科 身高：178cm 点击查看">
+    	</a>
+    </li>	
+      <li class="loaded">
+        <a href="#">
+        	<img src="upload_img/demo/8.jpg" title="国籍：加拿大  学历：本科 身高：178cm 点击查看">
+    	</a>
+    </li>	
+      <li class="loaded">
+        <a href="#">
+        	<img src="upload_img/demo/9.jpg" title="国籍：加拿大  学历：本科 身高：178cm 点击查看">
+    	</a>
+    </li>
+        <li class="loaded">
+        <a href="#">
+        	<img src="upload_img/demo/10.jpg" title="国籍：加拿大  学历：本科 身高：178cm 点击查看">
+    	</a>
+    </li>	
+      <li class="loaded">
+        <a href="#">
+        	<img src="upload_img/demo/11.jpg" title="国籍：加拿大  学历：本科 身高：178cm 点击查看">
+    	</a>
+    </li>	
+      <li class="loaded">
+        <a href="#">
+        	<img src="upload_img/demo/12.jpg" title="国籍：加拿大  学历：本科 身高：178cm 点击查看">
+    	</a>
+    </li>
+    -->    
+    </ul>
+    
+</div>
+
+<span class='reco'>
+<img src="/images/caclass/reco.gif">
+</span>
+
+<div class='cls'></div>
+<?php endif;?>
+<div class='icons_box'>
+
+<?php if (count($this->rows)!=0)
+	
+	foreach ($this->rows as $k=>$row) {
+        $dir="upload_img/ids/{$row->id}.jpg";
+        if (file_exists($dir)) {
+   	     $imgUrl='/'.$dir;
+		} else if ($row->sex==1) {
+			$imgUrl=$this->baseUrl()."/images/caclass/".'man.jpg';
+		} else {
+			
+          $imgUrl=$this->baseUrl()."/images/caclass/".'girl.jpg';
+		}
+		
+		$Url='/index/show/id/'.$row->id;
+		/*
+		list($width, $height, $type, $attr) = getimagesize(ROOT.'/public/'.$imgUrl);
+		$thumbWidth=149;
+      	// calculate thumbnail size
+      	$new_width = $thumbWidth;
+	 	if ($width!=0) {
+      	$new_height = floor( $height * ( $thumbWidth / $width ) );
+      	} else { $new_height=0;$new_width=0;}
+         */
+      	$name='';
+      	$nation=Model_Country::getName($row->nationality);
+      	if ($nation) {
+      		$name.="国籍：$nation";
+      	}
+		
+		$sex=Model_Sex::getName($row->sex);
+		if ($sex) {
+			$name.='， 性别：'.$sex;
+		}
+		$name.="， 身高(cm)：$row->height";
+		
+		$date = new DateTime($row->birth);
+		$now = new DateTime();
+		$interval = $now->diff($date);
+		
+		$name.="， 年龄：$interval->y";
+		$education=Model_Education::getName($row->edu);
+		if ($education) {
+			$name.="， 学历：$education";
+		}
+		
+		echo "<div class='icons'>
+		<a href='$Url' target='_blank'>
+		<img title='$name' src='$imgUrl' width='150' height='150' border='0' />
+		</a>
+		<br/><div class='icons_desc'>
+		{$interval->y}岁 国籍：$nation</div>
+		
+		<a href='$Url' target='_blank'>
+		<img src='/images/caclass/more.jpg'/>
+		</a>
+		
+		</div>";
+	}
+?>
+
+</div>
+
+<span class='reco1'>
+<img src="/images/caclass/reco1.gif">
+</span>
+
+<div class='cls'></div>
+<br/>
+
+
+<form name='searchfm' action='/index/search' method='post'>
+<div class='seek'>
+
+<table class='seek_tb'>
+<tr>
+<td class='notall' style="vertical-align:middle">
+
+</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+我要找
+<select name="gender" id="gender" class='search_cell'>
+<option value="2">女朋友</option>
+<option value="1">男朋友</option>
+</select>
+</td>
+<td>&nbsp;&nbsp;
+年龄
+<select name="age" id="age" class='search_cell'>
+<option value="16">16</option><option value="17">17</option>
+
+<option value="18" selected>18</option><option value="19">19</option><option value="20">20</option>
+<option value="21">21</option><option value="22">22</option><option value="23">23</option>
+<option value="24">24</option><option value="25">25</option><option value="26">26</option>
+<option value="27">27</option><option value="28">28</option><option value="29">29</option>
+<option value="30">30</option><option value="31">31</option><option value="32">32</option>
+<option value="33">33</option><option value="34">34</option><option value="35">35</option>
+<option value="36">36</option><option value="37">37</option><option value="38">38</option>
+<option value="39">39</option><option value="40">40</option><option value="41">41</option>
+<option value="42">42</option><option value="43">43</option><option value="44">44</option>
+<option value="45">45</option><option value="46">46</option><option value="47">47</option>
+<option value="48">48</option><option value="49">49</option><option value="50">50</option>
+<option value="51">51</option><option value="52">52</option><option value="53">53</option>
+<option value="54">54</option><option value="55">55</option><option value="56">56</option>
+<option value="57">57</option><option value="58">58</option><option value="59">59</option>
+<option value="60">60</option><option value="61">61</option><option value="62">62</option>
+<option value="63">63</option><option value="64">64</option><option value="65">65</option>
+</select>
+</td>
+<td>
+岁 至 
+<select name="maxage" id="maxage" class='search_cell'>
+<option value="16">16</option><option value="17">17</option>
+
+<option value="18">18</option><option value="19">19</option><option value="20">20</option>
+<option value="21">21</option><option value="22">22</option><option value="23">23</option>
+<option value="24">24</option><option value="25">25</option><option value="26">26</option>
+<option value="27">27</option><option value="28" selected>28</option><option value="29">29</option>
+<option value="30">30</option><option value="31">31</option><option value="32">32</option>
+<option value="33">33</option><option value="34">34</option><option value="35">35</option>
+<option value="36">36</option><option value="37">37</option><option value="38">38</option>
+<option value="39">39</option><option value="40">40</option><option value="41">41</option>
+<option value="42">42</option><option value="43">43</option><option value="44">44</option>
+<option value="45">45</option><option value="46">46</option><option value="47">47</option>
+<option value="48">48</option><option value="49">49</option><option value="50">50</option>
+<option value="51">51</option><option value="52">52</option><option value="53">53</option>
+<option value="54">54</option><option value="55">55</option><option value="56">56</option>
+<option value="57">57</option><option value="58">58</option><option value="59">59</option>
+<option value="60">60</option><option value="61">61</option><option value="62">62</option>
+<option value="63">63</option><option value="64">64</option><option value="65">65</option>
+</select>岁
+</td>
+<td>&nbsp;&nbsp;&nbsp;
+<?php 
+$rows=Model_Country::getRows();
+?>
+居住地<select name="country" id="country" class='search_cell'>
+<?php foreach ($rows as $i=>$nation):?>	
+<option value="<?php echo $i;?>"><?php echo $nation;?></option>;
+<?php endforeach; ?>
+</select>
+</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input name="pic" value="1" id="head" checked="1" type="checkbox">有照片
+</td>
+<td>&nbsp;&nbsp;&nbsp;
+<input type="image" src="/images/caclass/search.gif" name="submit" id="send" />
+
+</td>
+<td>&nbsp;&nbsp;&nbsp;
+<span><a href='/index/asearch/'><img  src="/images/caclass/searcha.gif"></a></span>
+</td>				
+</tr>
+</table>
+
+</div>
+</form>
+
+
+<div class='ok'>
+
+<a target="_blank" href='http://www.myca168.com'><img src="/images/caclass/ads168.jpg"></a>
+<!-- 
+<img src="/images/caclass/ok2.gif">
+-->
+</div>
+
+<style>
+
+.frame {
+width:940px;
+padding:2px 15px 0 0;
+margin-left:-20px;
+text-align:left;
+float:right
+}
+.reco img{
+padding:38px 0 0 5px;
+float:right;
+}
+.ok {
+padding:5px;
+}
+
+.icons_box {
+width:930px;
+float:right;
+margin-top:15px;
+}
+
+.icons {
+float:left;
+border:1px solid #F7EBC2; 
+magin-right:1px;
+text-align:center;
+}
+
+.reco1 img{
+padding:13px 0 0 5px;
+float:left;
+}
+
+.icons_desc{
+margin:5px 0 3px 0;
+color:#9F330E;
+}
+
+.seek_tb {
+margin-left:4px;
+width:960px;
+height:40px;
+border:1px solid #F7EBC2; 
+text-align: center;
+color:grey;
+display: table-cell;
+vertical-align: middle;
+}
+
+.notall {
+background:url(/images/caclass/search.jpg) no-repeat;
+width:160px;
+height:27px;
+text-align: center;
+color:white;
+}
+
+</style>
+<script>
+$('#send').click(function () {
+    // get age val field 1
+    var age1 = $('#age').val();
+    var age2 = $('#maxage').val();
+
+    // Check if empty of not
+    if (age1>age2) {
+        alert('年龄范围不对，上限必须大于下限！');
+        return false;
+    }
+});
+
+</script>

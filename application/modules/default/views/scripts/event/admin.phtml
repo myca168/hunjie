@@ -1,0 +1,65 @@
+<?php $this->headTitle('管理中心'); ?>
+
+<div class='back'><a href="javascript:history.go(-1)">返回 &gt;&gt;</a></div>
+
+<span class="enter back" id="post">【发布信息】&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 
+
+<a href="<?php echo $this->baseUrl();?>/">首页 </a> &gt;&gt;
+<a href="<?php echo $this->baseUrl();?>/event">同城活动 </a> &gt;&gt;
+管理中心<br/><br/>
+<div class="table_list">
+
+<table cellspacing="0">
+	<?php if (count($this->rows)>0) : ?> 
+	 <thead>
+		<tr class='tbl_th'>
+		<td width="35%">活动名称</td>
+		<td>活动地址</td>
+		<td width="12%">发布日</td>
+		</tr>
+	  </thead>
+	
+	  <tbody>
+	  	<?php if (count($this->rows)>0) : ?> 
+		<?php foreach ($this->rows as $i=>$row): ?>
+		  	<tr>
+		  		<td>
+		  		<?php
+		  		 	$k=$i+1; 
+		  			echo "&nbsp;&nbsp;($k) ".$row->title;
+		  		?>
+		  		<td>
+		  		<?php 
+		  			echo $row->address;
+		  		?>
+		  		</td>
+		  		<td><?php echo date('Y-m-d',strtotime($row->date_created));?></td>
+			</tr>
+			<tr>
+			<td colspan='3' class='action'><span class="focus">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作:</span>&nbsp;&nbsp; <a href="/event/edit/id/<?php echo $row->id;?>">编辑 / 查看</a> &nbsp;&nbsp;
+			| &nbsp;&nbsp;<a  href="/event/remove/id/<?php echo $row->id;?>">删除</a> &nbsp;&nbsp;| &nbsp;&nbsp;
+			</td>
+			</tr>
+		<?php endforeach;?>  
+		<?php endif; ?>	
+		 </tbody>
+	  <?php endif; ?>
+	</table><br/>
+</div>
+
+<style>
+.table_list table {
+width:98%;
+}
+
+.enter{
+margin-left:10px;	
+}
+</style>
+
+<script type="text/javascript">
+$(".enter").click(function(){
+ 	var url="<?php echo $this->baseUrl().'/default/event/add';?>";
+ 	window.location.href = url; 
+});
+</script>		

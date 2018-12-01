@@ -1,0 +1,37 @@
+<?php 
+$this->menutitle="创建新用户";
+$this->left=" <br/>&nbsp;&nbsp;&nbsp;您好! 注册后系统会发E-mail给您。如果收件箱里没有验证邮件，请查看垃圾箱。
+如果还是没有收到，请与我们联系.谢谢！";
+?>
+
+<br/>
+<?php 
+echo $this->form->displayErrorBox();	
+echo $this->form;
+$this->loginfm='';
+?>
+<br/>
+
+<style>
+.bigform {
+width:90%;	
+float:left;
+}
+.bigform .label_c1 {
+width:18%;
+text-align:right;	
+}
+
+.bigform .field_c2 {
+width:70%;
+} 
+
+.verify img {
+margin-bottom:-5px;	
+}
+
+.columnBody {
+padding:0 5px;
+}
+
+</style>

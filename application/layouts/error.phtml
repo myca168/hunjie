@@ -1,0 +1,25 @@
+<?php 
+echo $this->doctype();
+$encoding = $this->getEncoding();
+if ( $encoding ) {
+	header('Content-Type: text/html; charset='.$encoding);
+    $this->headMeta()->prependHttpEquiv('Content-Type', 'text/html; charset='.$encoding);
+} 
+?>
+<html>
+<head>
+<?php 
+echo $this->headMeta(), "\n";
+echo $this->headTitle(), "\n";
+echo $this->headLink(), "\n";
+echo $this->headStyle(), "\n";
+echo  $this->jQuery(), "\n";
+echo $this->headScript(), "\n"; 
+?>
+</head>
+<body>
+<div class="error_container">
+<?php echo $this->layout()->content; ?>
+</div> 
+</body>
+</html>

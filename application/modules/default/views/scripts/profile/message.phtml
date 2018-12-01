@@ -1,0 +1,56 @@
+<?php 
+$this->menutitle="档案资料";
+$this->left=$this->profile();
+?>
+<br/>
+
+<?php if (count($this->rows)!=0): ?>
+
+<b><i>会员给您发送以下信息 :</i></b>
+<div class="hastable">
+<table cellspacing="0">
+	  <thead>
+		<tr>
+		<td width="28%">对方邮箱</td>
+		<td width="12%">发送日期</td>
+		<td width="35%">标题</td>
+		<td width="7%">状态</td>
+		
+		<td colspan="2">操作</td>
+		</tr>
+	  </thead>
+	  <tbody>
+		<?php foreach ($this->rows as $i=>$row): ?>
+		  <tr>
+		    <td>
+		    <?php 
+		    $id=$row->sid;
+		    $from=Model_Member::getUserById($id);
+		    echo $from->email;
+		    ?>
+		    </td>  
+		    <td><?php echo $this->escape($row->created_date); ?></td> 
+		    <td><?php echo $this->escape($row->title); ?></td> 
+		    <td>
+		    <?php
+		    if ($row->flag==0) {
+		    echo "&nbsp;未阅";	
+		    } 
+		    ?>
+		    </td> 
+		    
+		    <td><a target="_blank" href="/profile/messageview/id/<?php echo $row->id;?>">查看短信</a></td>
+		   <td>
+		    <a onClick="return confirm( '确定要删除吗 ?' )" href="/profile/messagedel/id/<?php echo $row->id;?>">删除短信</a>
+		    </td>
+		  </tr>
+		<?php endforeach; ?>
+	  </tbody>
+	</table><br/>
+	<?php
+	echo $this->paginationControl($this->rows, 'Sliding', 'pagination.phtml');
+	?>
+</div>
+<?php else: ?>
+<center>未收到信息！</center>
+<?php endif;?>

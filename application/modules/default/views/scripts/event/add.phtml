@@ -1,0 +1,84 @@
+<style>
+
+#bd {
+background-color:#F8F8F8;	
+}
+
+.bigform {
+margin-left:20px;
+}
+.bigform .label_c1 {
+width:100px;
+text-align:right;	
+padding-top:5px;
+}
+
+.bigform .field_c2 {
+padding-top:5px;
+} 
+
+.verify img {
+margin-bottom:-5px;	
+}
+
+</style>
+
+<?php $this->headTitle('同城活动'); ?>
+<div class="maincontent">
+
+<div class='back'><a href="javascript:history.go(-1)">返回 &gt;&gt;</a></div>
+
+<a href="<?php echo $this->baseUrl();?>/">首页 </a> &gt;&gt;
+<a href="<?php echo $this->baseUrl();?>/event">同城活动 </a> &gt;&gt;
+发布信息<br/><br/>
+<?php 
+$url=$this->baseUrl()."/upload_img/events/".$this->login.'/'.$this->dir;
+
+echo $this->form->displayErrorBox();
+echo $this->form;
+?>
+</div>
+<script type="text/javascript">
+var images = <?php echo json_encode($this->imgs);?>;
+$(document).ready(function(){
+	if ((images.length)>0) {
+    	$.each(images, function(n, element) {
+        	var image="/upload_img/events/<?php echo $this->login.'/'.$this->dir;?>/"+element;
+        	var file=element.substring(0,element.length-4);
+		   $('<div id="'+file+'" class="box"><img width="100"  height="120" src="'+image+'" /><p class="'+file+'"><span class="insert">插入</span><span class="remove">删除</span><span class="view">查看</span></p></div>').appendTo('.img_box');
+		}); 
+   	 $('<div class="clear"></div>').appendTo('.img_box');
+	}
+});
+
+$('.view').live('click', function() {
+	var id=$(this).parent().parent().attr("id");
+	window.open ('<?php echo $url;?>/'+id + '.jpg','_blank',false);
+});
+$('.insert').live('click', function(){ 
+	 var fileid=$(this).parent().parent().attr("id");
+	 var ifile="<?php echo $url;?>/"+fileid + '.jpg';
+	 var ed =tinyMCE.activeEditor;
+	 ed.execCommand('mceInsertContent',false,'<img src="'+ifile+'"/>');
+});
+
+$('.remove').live('click', function() { 
+	var fileid=$(this).parent().parent().attr("id");
+        var owner="<?php echo $this->login;?>";
+	 $.ajax({
+		 	url:"/default/event/delimg",
+		    dataType:"json",
+		    type:"post",
+		    data:{fileid: fileid, login:owner, dir:"<?php echo $this->dir;?>"},
+		    success: function(data){
+		    	if(data["flag"]=="yes"){
+			    	$("#"+fileid).remove();
+			    }
+		    }
+	 });
+			return false;
+}) 
+
+</script>
+
+

@@ -1,0 +1,164 @@
+<?php $this->headTitle('同城活动'); ?>
+
+<div id='c3'>
+<span class="enter" id="enter">【管理中心】 </span>&nbsp;
+<span class="enter back" id="post">【发布信息】</span>    
+</div>
+
+<?php 
+$id=0;
+$chk=false;
+if (Zend_Auth::getInstance()->hasIdentity ()) {
+	$id=Zend_Auth::getInstance()->getIdentity ()->id;
+	$role=Zend_Auth::getInstance()->getIdentity ()->role_id;
+	$arr=array(
+			Caclass_Acl::ROLE_SALE,
+			Caclass_Acl::ROLE_MANAGER,
+			Caclass_Acl::ROLE_ADMIN,
+			Caclass_Acl::ROLE_IT
+			);
+	if (in_array($role, $arr)){
+			$chk=true;
+			$editUrl="/event/edit/id/{$this->item->id}";
+			$delUrl="/event/remove/id/{$this->item->id}";
+	}
+	
+}
+?>
+
+
+<div class="maincontent">
+<a href="<?php echo $this->baseUrl();?>/">首页 </a> &gt;&gt;
+<a href="<?php echo $this->baseUrl();?>/event">同城活动 </a> &gt;&gt;
+查看
+</div>
+<br/>
+
+
+<div class="table_list">
+<?php 
+if (!$chk) {
+echo "<span class='item_title'>{$this->item->title}</span><br/>";
+} else {
+	
+echo "<span class='item_title'>{$this->item->title}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target='_blank' href='$editUrl'>[EDIT]</a>&nbsp;&nbsp;&nbsp;<a href='$delUrl'>[REMOVE]</a><br/>";	
+} 
+$cityid="{$this->item->city}";
+$city=Model_City::getCity($cityid);
+?>
+<table cellspacing="0">
+		<tr>
+		<td><span class="pre_info">活动日期 : </span> 
+		<?php 
+		echo date('Y-m-d',strtotime($this->item->start_date)).' 至 '.date('Y-m-d',strtotime($this->item->end_date));
+		?>
+		</td>
+		<td>
+		<span class="pre_info">活动时间 :</span>
+		<?php 
+		echo $this->item->time1.":".$this->item->min1.' 至 '.$this->item->time2.":".$this->item->min2;
+		?>
+		</td>
+		</tr>
+		<tr>
+		<td><span class="pre_info">联系人 : </span><?php echo $this->item->contact;?></td>
+		<td><span class="pre_info">电话 : </span><?php echo "{$this->item->phone}";?></td>
+		</tr>
+		<tr>
+		<td colspan='2'><span class="pre_info">电邮: </span><?php echo "{$this->item->email}";?></td>
+		</tr>
+		<tr>
+		<td width="60%"><span class="pre_info">所在地区 : </span><?php echo $city->name;?></td>
+		<td><span class="pre_info">广告发布日 : </span><?php echo "{$this->item->date_created}";?></td>
+		</tr>
+		<tr>
+		<td colspan='2'><span class="pre_info">活动地址 : </span><?php echo "{$this->item->address}";?></td>
+		</tr>
+		<tr>
+		<td colspan='2'><span class="pre_info">详细介绍 : <br/><br/></span>
+		<div class="details"><?php echo "{$this->item->details}";?></div></td>
+		</tr>
+</table><br/>
+
+<?php if (count($this->images)!=0): ?>
+
+<fieldset class="attachfields">
+	<legend>相关图片</legend>
+	
+	<ul class="attach_list">
+	<?php 
+	foreach ($this->images as $image) {
+		$imgUrl=$this->baseUrl()."/upload_img/events/".$this->item->login.'/'
+			.$this->item->dir.'/'.$image;	
+		
+		list($width, $height, $type, $attr) = getimagesize(ROOT.'/public'.$imgUrl);
+		$thumbWidth=120;
+      	// calculate thumbnail size
+      	$new_width = $thumbWidth;
+	 	if ($width!=0) {
+      	$new_height = floor( $height * ( $thumbWidth / $width ) );
+      	} else { $new_height=0;$new_width=0;}
+		
+		echo "<li><a href='$imgUrl' target='_blank'><img src='$imgUrl' width='$new_width' height='$new_height' border='0' /></a></li>";
+	}
+	?>
+	</ul>
+
+</fieldset> 
+ 
+<?php endif; ?>
+</div>
+
+<style>
+
+.details {
+overflow:scroll;
+min-height:400px;
+}
+
+#c3 {
+float:right;	
+margin-right:20px;
+}
+
+
+.item_title {
+font-size:large;	
+padding-left:10px;
+}
+
+.table_list table {
+width:98%;
+}
+
+.msg {
+color:red;
+}
+
+.post_notes {
+width:25%;
+}
+
+</style>
+<script type="text/javascript">
+$(".enter").click(function(){
+ 	var id = <?php echo $id;?>;
+ 	var type=$(this).attr("id");
+ 	if (!id) {
+ 	 	alert("您不是会员, 请先登录或注册。 谢谢!");
+ 	 	return false;
+ 	}
+ 	if ( type == "enter") {
+ 	 	var url="<?php echo $this->baseUrl().'/default/event/admin';?>";
+ 		window.location.href = url; 
+ 	}
+ 	if ( type == "post") {
+ 	 	var url="<?php echo $this->baseUrl().'/default/event/add';?>";
+ 		window.location.href = url; 
+ 	}
+ 	
+	return false;
+});
+
+</script>	
+			

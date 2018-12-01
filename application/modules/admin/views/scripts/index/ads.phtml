@@ -1,0 +1,74 @@
+<div class='back'><a href="javascript:window.close()">【关闭】</a></div>
+<?php 
+
+
+$this->menutitle=" 会员列表";
+
+$this->left=
+"<ul>
+<li><a href='/admin' class='link'><img
+src='/images/icons/lock_edit.png' class='icon' />会员列表 </a></li>
+</ul>";
+
+?>
+
+<div class="hastable">
+<?php echo "会员ID：{$this->user->id}, 会员姓名：{$this->user->lname} {$this->user->name}";?>
+<table cellspacing="0">
+	  <thead>
+		<tr>
+		<td width="10%">广告 ID</td>
+		<td width="11%">起始日期</td>
+		<td width="11%">截止日期</td>
+		<td width="11%">订单日期</td>
+		<td width="8%">月数</td>
+		<td width="8%">金额</td>
+		<td width='8%'>付款</td>
+		<td colspan="3">操作</td>
+		</tr>
+	  </thead>
+	  <tbody>
+		<?php foreach ($this->rows as $i=>$row): ?>
+		  <tr>
+		     
+		    <td><?php echo $this->escape($row->id); ?></td> 
+		    <td><?php echo $this->escape($row->start_date); ?></td> 
+		    <td><?php echo $this->escape($row->end_date); ?>
+		    </td> 
+		    <td> <?php echo $row->inv_date ?></td> 
+		    <td> <?php echo Model_Rate::getName($row->unit); ?></td> 
+		    <td> <?php echo $row->amt ?></td> 
+		    <td> 
+		    <?php
+		    if ($row->paid_flag==0) {
+		    	echo "未付";
+		    } else {echo "已付";}
+		    ?>
+		    </td> 
+		    
+		    <td>
+		    <a href="/admin/index/zero/uid/<?php echo $this->user->id; ?>/id/<?php echo $row->id;?>">金额清零</a>
+		    
+		    </td>
+		    <td>
+		    <a href="/admin/index/paid/uid/<?php echo $this->user->id; ?>/id/<?php echo $row->id;?>">已付设置</a>
+		    </td>
+		    <td>
+		    <a href="/admin/index/rminv/uid/<?php echo $this->user->id; ?>/id/<?php echo $row->id;?>">发票删除</a>
+		    </td>
+		  </tr>
+		<?php endforeach; ?>
+	  </tbody>
+	</table><br/>
+	<?php
+	echo $this->paginationControl($this->rows, 'Sliding', 'pagination.phtml');
+	?>
+</div>
+
+<style>
+.hastable table tr td {
+text-align:center;
+}	
+	
+</style>
+

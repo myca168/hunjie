@@ -1,0 +1,199 @@
+<?php $this->headTitle('佳丽婚介 - 搜索'); ?>
+<form name='searchfm' action='/index/search' method='post'>
+<div class='seek'>
+
+<table class='seek_tb'>
+<tr>
+<td class='notall' style="vertical-align:middle">
+对他们都不感兴趣？
+</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+我要找
+<select name="gender" id="gender" class='search_cell'>
+<option value="2">女朋友</option>
+<option value="1">男朋友</option>
+</select>
+</td>
+<td>&nbsp;&nbsp;
+年龄
+<select name="age" id="age" class='search_cell'>
+<option value="16">16</option><option value="17">17</option>
+
+<option value="18" selected>18</option><option value="19">19</option><option value="20">20</option>
+<option value="21">21</option><option value="22">22</option><option value="23">23</option>
+<option value="24">24</option><option value="25">25</option><option value="26">26</option>
+<option value="27">27</option><option value="28">28</option><option value="29">29</option>
+<option value="30">30</option><option value="31">31</option><option value="32">32</option>
+<option value="33">33</option><option value="34">34</option><option value="35">35</option>
+<option value="36">36</option><option value="37">37</option><option value="38">38</option>
+<option value="39">39</option><option value="40">40</option><option value="41">41</option>
+<option value="42">42</option><option value="43">43</option><option value="44">44</option>
+<option value="45">45</option><option value="46">46</option><option value="47">47</option>
+<option value="48">48</option><option value="49">49</option><option value="50">50</option>
+<option value="51">51</option><option value="52">52</option><option value="53">53</option>
+<option value="54">54</option><option value="55">55</option><option value="56">56</option>
+<option value="57">57</option><option value="58">58</option><option value="59">59</option>
+<option value="60">60</option><option value="61">61</option><option value="62">62</option>
+<option value="63">63</option><option value="64">64</option><option value="65">65</option>
+</select>
+</td>
+<td>
+岁 至 
+<select name="maxage" id="maxage" class='search_cell'>
+<option value="16">16</option><option value="17">17</option>
+
+<option value="18">18</option><option value="19">19</option><option value="20">20</option>
+<option value="21">21</option><option value="22">22</option><option value="23">23</option>
+<option value="24">24</option><option value="25">25</option><option value="26">26</option>
+<option value="27">27</option><option value="28" selected>28</option><option value="29">29</option>
+<option value="30">30</option><option value="31">31</option><option value="32">32</option>
+<option value="33">33</option><option value="34">34</option><option value="35">35</option>
+<option value="36">36</option><option value="37">37</option><option value="38">38</option>
+<option value="39">39</option><option value="40">40</option><option value="41">41</option>
+<option value="42">42</option><option value="43">43</option><option value="44">44</option>
+<option value="45">45</option><option value="46">46</option><option value="47">47</option>
+<option value="48">48</option><option value="49">49</option><option value="50">50</option>
+<option value="51">51</option><option value="52">52</option><option value="53">53</option>
+<option value="54">54</option><option value="55">55</option><option value="56">56</option>
+<option value="57">57</option><option value="58">58</option><option value="59">59</option>
+<option value="60">60</option><option value="61">61</option><option value="62">62</option>
+<option value="63">63</option><option value="64">64</option><option value="65">65</option>
+</select>岁
+</td>
+<td>&nbsp;&nbsp;&nbsp;
+<?php 
+$rows=Model_Country::getRows();
+?>
+居住地<select name="country" id="country" class='search_cell'>
+<?php foreach ($rows as $i=>$nation):?>	
+<option value="<?php echo $i;?>"><?php echo $nation;?></option>;
+<?php endforeach; ?>
+</select>
+</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input name="pic" value="1" id="head" checked="1" type="checkbox">有照片
+</td>
+<td>&nbsp;&nbsp;&nbsp;
+<input type="image" src="/images/caclass/search.gif" name="submit" id="send" />
+
+</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span><a href='/index/asearch/'><img  src="/images/caclass/searcha.gif"></a></span>
+</td>				
+</tr>
+</table>
+
+</div>
+</form>
+
+
+
+<div class="hastable">
+<table cellspacing="0">
+	  <thead>
+		<tr>
+		<td width="75">个人头像</td>
+		<td>会员简介</td>
+		<td width='50'>操作</td>
+		</tr>
+	  </thead>
+	  <tbody>
+		<?php foreach ($this->rows as $i=>$row): ?>
+		  <tr>
+		    <td>
+		    <?php 
+		    
+		   
+		    
+		    $url="/index/show/id/".$row->id;
+		    
+		    $logofile="upload_img/ids/".$row->id.".jpg";
+		   echo "<a href='$url'  target='_blank'>";
+		    if (file_exists($logofile)) {
+		    echo "<img align='center' width='80' height='80' src='/upload_img/ids/".$row->id.".jpg'/>";
+		    } else {
+			echo "<img align='center' width='80' height='80' src='/images/caclass/default.jpg'/>";
+		    }
+		    echo "</a>"
+		    ?>
+		    </td>  
+		    <td><?php 
+		    echo "<span class='pre_info'>",$row->title."</span><br/>";
+		    $name="会员ID：".$row->id;
+		    $sex=Model_Sex::getName($row->sex);
+		    if ($sex) {
+			$name.='， 性别：'.$sex;
+			}		    	
+		    $name.="， 身高(cm)：$row->height";
+
+		    $date = new DateTime($row->birth);
+		    $now = new DateTime();
+		    $interval = $now->diff($date);
+		    
+		    $name.="， 年龄：$interval->y";
+		    $education=Model_Education::getName($row->edu);
+		    if ($education) {
+		    $name.="， 学历：$education";
+		    }
+		    $mar=Model_Status::getName($row->marriage);
+		    if ($mar) {
+		    $name.="，婚姻状况:".$mar;	
+		    }
+		    
+		    $cn=Model_Country::getName($row->country);
+		    if ($cn) {
+		    $name.="，现居住地：$cn".$row->city;
+		    }
+		    $nation=Model_Country::getName($row->nationality);
+		    if ($nation) {
+		    $name.="， 国籍：$nation";
+		    }
+		    $name.="， 职业：".$row->job;
+		    $name.="， 注册日期：".$row->created_date;
+                    if ($row->last_visit!='') {
+		    $name.="， 上次登录日期：".date('Y-m-d',strtotime($row->last_visit)).'。';
+		    }
+		    echo $name;
+		    
+		    
+		    ?>
+		    </td> 
+		    <td>
+		    <a target="_blank" href="<?php echo $url;?>"><img src='/images/caclass/more.jpg'/></a>
+		    </td>
+		  </tr>
+		<?php endforeach; ?>
+	  </tbody>
+	</table><br/>
+	<?php
+	echo $this->paginationControl($this->rows, 'Sliding', 'pagination.phtml');
+	?>
+</div>
+<style>
+.seek_tb {
+margin-left:4px;
+width:970px;
+height:40px;
+border:1px solid #F7EBC2; 
+text-align: center;
+color:grey;
+display: table-cell;
+vertical-align: middle;
+}
+
+.notall {
+background:url(/images/caclass/start.jpg) no-repeat;
+width:170px;
+height:27px;
+text-align: center;
+color:white;
+}
+
+.icons_desc{
+margin:5px 0 3px 0;
+color:#9F330E;
+}
+
+
+</style>
+

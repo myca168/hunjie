@@ -1,0 +1,79 @@
+<div class='back'><a href="javascript:history.go(-1)">【返回】</a></div>
+
+<?php
+$this->headTitle('付款中心');
+$data=$this->data;
+echo "&nbsp;&nbsp;&nbsp;<b>
+Hi, 只有订阅会员才能发送短信 , 付清如下款项，您将成为本站的终身订阅超级会员。谢谢！ <hr/>
+</b>";
+?>
+
+<table class='frame_table'>
+<tr>
+<td valign='top' width='30%'>
+<div class='pay_info'>
+<div class='ads_details'><span class='pre_info'>付款总金额 :</span><?php echo $data['total']?> 加币</div>
+<div class='ads_details'><span class='pre_info'>单价 :</span><?php echo $data['price']?></div>
+<div class='ads_details'><span class='pre_info'>金额  :</span><?php echo $data['price']?></div>
+<div class='ads_details'><span class='pre_info'>税 :</span><?php echo $data['tax_amt']?></div>
+<div class='ads_details'><span class='pre_info'>货币单位 :</span>加币</div><br/>
+<div>
+<hr/>
+<p>如果您对付款事宜有任何疑问，请与我们联系 :</p><br/>
+<p>电邮 : <?php echo Model_Site::getRow(Model_Site::SITE_BILLINGS)->detail;?></p>
+<p>电话 : <?php echo Model_Site::getRow(Model_Site::SITE_TEL)->detail;?></p>
+</div>
+
+</div>
+
+</td>
+<td width='60%'>
+<div class='pay_fm'>
+<?php echo "<div class='alert'>{$this->msg}</div>";?>
+<form enctype="application/x-www-form-urlencoded" action="" method="post">
+
+<input type="image" name="paypal" value="paypal" src='/images/paypal_en.gif'>
+
+</form>
+<br/>
+<img alt="" src="/images/creditcards.jpg">
+
+
+
+</div>
+</td>
+</tr>
+</table>
+
+<style>
+
+.pay_info{
+margin-left:20px;
+margin-right:20px;
+text-align:right;
+}
+
+.ads_details {
+padding:10px;	
+}
+
+.pre_info{
+padding-right:5px;	
+}
+
+.bigform {
+width:100%;	
+}
+
+.bigform .label_c1 {
+text-align:right;
+width:20%;
+}
+
+.form_errors_block {
+padding-left:20%;
+color:red;
+width:100%;
+}
+
+</style>

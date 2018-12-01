@@ -1,0 +1,142 @@
+<?php
+echo $this->doctype ();
+
+$encoding = $this->getEncoding ();
+if ($encoding) {
+	header ( 'Content-Type: text/html; charset=' . $encoding );
+	$this->headMeta ()->prependHttpEquiv ( 'Content-Type', 'text/html; charset=' . $encoding );
+}
+?>
+<html>
+<head>
+
+
+<?php
+// $this->headLink ()->appendStylesheet ( '/css/ui-lightness/jquery-ui-1.8.2.custom.css' );
+
+$this->headLink()->appendStylesheet('/css/ui-lightness/jquery-ui-1.10.3.custom.css');
+$this->headLink ()->appendStylesheet ( '/css/style_yui.css' );
+$this->headLink ()->appendStylesheet ( '/css/caclass.css' );
+
+$this->headScript()->appendFile('/js/jquery-1.9.1.js');
+$this->headScript()->appendFile('/js/jquery-ui-1.10.3.custom.js');
+$this->headScript()->appendFile('/js/app.js');
+
+
+$keywords = Model_Site::getRow ( Model_Site::SITE_KEYWORDS )->detail;
+$descriptions = Model_Site::getRow ( Model_Site::SITE_DESC )->detail;
+$this->headMeta ()->appendName ( "keywords", $keywords );
+$this->headMeta ()->appendName ( "description", $descriptions );
+
+echo $this->jQuery (), "\n";
+echo $this->headMeta (), "\n";
+echo $this->headTitle (), "\n";
+echo $this->headStyle (), "\n";
+echo $this->headLink (), "\n";
+echo $this->headScript (), "\n";
+
+?>
+</head>
+
+<body>
+
+<!-- Use YUI 3 Columns By William -->
+
+
+<div id="doc4" class="yui-t1">
+
+<?php include ('header.phtml'); ?>
+					
+<div id='bd'>
+
+<div class="yui-b">
+
+<?php 	echo $this->ads_left; 
+ if ($this->adsflyers) {
+ 	echo $this->flyers;
+ }
+?>
+ 
+
+</div>
+
+<div id="yui-main">
+<div class="yui-b">
+
+<div class="yui-ge">
+<div class="yui-u first">
+
+<?php 
+$types=Model_NewsType::getFewTypes(3);
+
+$item= "<span class='sp'>";
+if (count($types)>0) {
+
+foreach ($types as $type) {
+$item.="<span>&nbsp;&nbsp;【<a target='_blank' href='/news/index/thread/id/{$type->id}'>{$type->name}</a>】</span>";	
+}
+
+}
+
+$item.="<span>&nbsp;&nbsp;<a target='_blank' href='/news/'>更多..</a></span></span>"
+
+
+?>
+
+
+
+<div class="unit unit2">
+<div class="title" style=""><span class="titletext">焦点新闻<?php echo $item;?></span></div>
+<div class="unit_bc">
+<div class="module">
+<?php
+echo $this->news2, $this->news1;
+?>
+</div>
+</div>
+</div>
+
+<br />
+</div>
+
+
+<div class="yui-u ads"> 
+<?php echo $this->ads_right; ?>
+
+<div class='tools'>
+<div class="unit unit3">
+<div class="title"><span class="titletext"><a href="">实用链接</a></span></div>
+<div class="unit_bc">
+<div class="module ">
+<?php echo $this->link;?>
+</div>
+</div>
+</div>
+</div>
+	<?php if(count($this->sites)>0): ?>
+	 <div class='friends'>
+	 友情链接:<br/>
+	<select class='sites'>
+	<?php foreach ($this->sites as $i=>$site): ?>
+	<option value='<?php echo $site->link;?>'><?php echo $site->name;?></option>
+	<?php endforeach;?>
+	</select>
+	<input class='friendlink' type="submit" name="login" value="go">
+	</div>
+	<?php endif; ?>
+	
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div id="ft">
+<p id="power_by"><?php include('footer.phtml');?></p>
+</div>
+
+</div>
+</body>
+</html>

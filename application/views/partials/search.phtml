@@ -1,0 +1,13 @@
+<script type="text/javascript">
+function clearText(field){
+    if (field.defaultValue == field.value) field.value = '';
+    else if (field.value == '') field.value = field.defaultValue;
+}
+</script>
+
+<div id="c_search">
+<form class="forms" method="post" name="form" action="<?php echo $this->action; ?>">
+<input value="" size="15" onfocus="clearText(this)" onBlur="clearText(this)" id="searchform" name="query" type="text" />
+<button name="submit" type="submit">Search</button>
+</form>
+</div>

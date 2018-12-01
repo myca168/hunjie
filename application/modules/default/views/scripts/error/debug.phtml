@@ -1,0 +1,5 @@
+<div class="block">
+<h3>Exception throwed: </h3>
+<p><?php echo $this->escape($this->exception->getMessage()); ?></p>
+<?php echo nl2br($this->escape($this->exception->getTraceAsString())); ?>
+</div>

@@ -1,0 +1,34 @@
+<?php 
+$this->menutitle="档案资料";
+$this->left=$this->profile();
+
+?>
+<br/>
+<br/>
+
+<span class='alert'>温馨提示： 提交表单将删除您所有的记录、图片等，需重新注册才能登录本站 ！</span>
+
+<br/><br/><br/>
+<?php 
+if (Zend_Auth::getInstance()->hasIdentity ()) {
+	$id=Zend_Auth::getInstance()->getIdentity ()->id;
+	$role=Zend_Auth::getInstance()->getIdentity ()->role_id;
+	$arr=array(
+			Caclass_Acl::ROLE_BILLING,
+			Caclass_Acl::ROLE_MANAGER,
+			Caclass_Acl::ROLE_ADMIN,
+			Caclass_Acl::ROLE_AGENT,
+			);
+	if (in_array($role, $arr)){
+			echo "<span class='alert'>您是婚介或是网站管理用户，若想删除您的档案，请联系本站管理员！</span>";
+	} else {
+echo "
+<form action='/profile/remove' method='post'>
+<input id='chk' type='checkbox' name='del' value='1' />&nbsp; 若想删除您的个人档案，请选中左边复选框，
+					并点击提交按钮.&nbsp;&nbsp;&nbsp;
+<input id='submit' type='submit' value='提交' />
+</form> <br/>
+	";
+	}
+}
+?>

@@ -1,0 +1,292 @@
+<?php $this->headTitle('会员信息预览'); ?>
+<?php 
+$id=0;
+$chk=false;
+$agent=false;
+if (Zend_Auth::getInstance()->hasIdentity ()) {
+	$id=Zend_Auth::getInstance()->getIdentity ()->id;
+	$role=Zend_Auth::getInstance()->getIdentity ()->role_id;
+	$arr=array(
+			Caclass_Acl::ROLE_BILLING,
+			Caclass_Acl::ROLE_MANAGER,
+			Caclass_Acl::ROLE_ADMIN,
+			);
+	if (in_array($role, $arr)){
+			$chk=true;
+	}
+	if ($role==Caclass_Acl::ROLE_AGENT) {
+		if ($id==$this->row->agent_id) {
+			$agent=true;
+		} else {exit;}
+		
+	}
+}
+?>
+
+
+<div class='top_nav tda'>
+<a class='back' href="javascript:window.close()">&nbsp;【关闭窗口】</a>
+<?php if ($this->row->role_id!=Caclass_Acl::ROLE_AGENT):?>
+<a class='back del' onClick="return confirm( '确定要删除吗 ?' )" href="/admin/master/del/id/<?php echo $this->row->id;?>">【删除会员记录】</a>
+<?php endif;?>
+</div>
+
+
+
+<br/>
+
+<table class='frame'>
+<tr>
+<td>
+<div class="table_list">
+<?php 
+echo "<span class='head_title'>【会员ID： {$this->row->id}】&nbsp;&nbsp;{$this->row->title}</span><br/>";
+?>
+<table cellspacing="0">
+		<tr>
+		<td><span class="pre_info">会员姓名 : </span>
+		<?php echo $this->row->lname,$this->row->name;?>
+		</td>
+		
+		<td><span class="pre_info">现居住地: </span>
+		<?php 
+		$cn=Model_Country::getName($this->row->country);
+		if ($cn) {
+			$residence=$cn.$this->row->city;
+		}
+		echo $residence;
+		?>
+		</td>
+		<td><span class="pre_info">国籍 : </span>
+		<?php echo Model_Country::getName($this->row->nationality);?>
+		</td>
+		<td width="150" rowspan='9'>
+		<?php 
+		$logofile="upload_img/ids/".$this->row->id.".jpg";
+		    if (file_exists($logofile)) {
+		    echo "<img align='center' width='150' height='150' src='/upload_img/ids/".$this->row->id.".jpg'/>";
+		    } else {
+			echo "<img align='center' width='150' height='150' src='/images/caclass/default.jpg'/>";
+		    }
+		?>
+		<br/><br/>
+		<img align='center' width='150' src='/images/caclass/rose.jpg'/>
+		</td>
+		</tr>
+		<tr>
+		<?php
+		$flag1='否';
+		if ($this->row->sqn1!=0) {
+			$flag1="是";
+		}
+		if ($agent || $chk) {
+		echo "
+		<td><span class='pre_info'>电邮 : </span>{$this->row->email}</td>
+		<td><span class='pre_info'>电话 : </span>{$this->row->tel}</td>
+		<td><span class='pre_info'>是否首页显示: </span>$flag1</td>
+		";
+		}
+		?>
+		</tr>
+		<tr>
+		<td><span class="pre_info">性别 : </span>
+		<?php 
+		echo Model_Sex::getName($this->row->sex);
+		?>
+		</td>
+		<td><span class="pre_info">身高(cm): </span>
+		<?php 
+		echo $this->row->height;
+		?>
+		</td>
+		<td><span class="pre_info">出生日期 :</span>
+		<?php echo $this->row->birth;?>
+		</td>
+		</tr>
+		<tr>
+		<td><span class="pre_info">学历 : </span>
+		<?php 
+		echo Model_Education::getName($this->row->edu);
+		?>
+		</td>
+		<td><span class="pre_info">婚姻状况 : </span>
+		<?php 
+		echo Model_Status::getName($this->row->marriage);
+		?>
+		</td>
+		<td><span class="pre_info">年龄:</span>
+		<?php 
+		$date = new DateTime($this->row->birth);
+		$now = new DateTime();
+		$interval = $now->diff($date);
+		echo $interval->y;
+		
+		?>
+        </td>		
+		</tr>
+		<tr>
+		<td><span class="pre_info">祖籍 : </span>
+		<?php 
+		echo Model_Ethics::getName($this->row->ethics);
+		?>
+		</td>
+		<td><span class="pre_info">信仰 : </span>
+		<?php 
+		echo Model_Religion::getName($this->row->religion);
+		?>
+		</td>
+		<td><span class="pre_info">年收入 : </span>
+		<?php 
+		if ($this->row->pay!=0) {
+		echo $this->row->pay;
+		}
+		?>
+		</td>		
+		</tr>
+		
+		<tr>
+		<td><span class="pre_info">体重(KG) : </span>
+		<?php
+		if ($this->row->weight!=0) { 
+		echo $this->row->weight;
+		}
+		?>
+		</td>
+		<td><span class="pre_info">有无小孩 : </span>
+		<?php 
+		$child="没有";
+		if ($this->row->child==1) {$child='有-不住家里';}
+		if ($this->row->child==2) {$child='有-有时住在家里';}
+		if ($this->row->child==3) {$child='有-住在家里';}
+		echo $child;
+		?>
+		</td>
+		<td><span class="pre_info">职业 : </span>
+		<?php echo $this->row->job;?>
+		</td>
+		</tr>
+		<tr>
+		<td><span class="pre_info">中文: </span>
+		<?php 
+		echo Model_Chinese::getName($this->row->chinese);
+		?></td>
+		<td><span class="pre_info">英文 : </span>
+		<?php 
+		echo Model_English::getName($this->row->english);
+		?>
+		</td>
+		<td><span class="pre_info">注册日期 : </span>
+		<?php echo $this->row->created_date;?>
+		</td>
+		</tr>
+		<tr>
+		<td><span class="pre_info">是否酗酒 : </span>
+		<?php 
+		$drink='没有';
+		if ($this->row->drink==1) {$drink='有';}
+		if ($this->row->drink==2) {$drink='有时候';}
+		echo $drink;
+		?>
+		</td>
+		<td><span class="pre_info">抽烟否 : </span>
+		<?php 
+		$smoke='不抽烟';
+		if ($this->row->drink==1) {$smoke='有时候';}
+		if ($this->row->drink==2) {$smoke='经常抽烟';}
+		echo $smoke;
+		?>
+		</td>
+		<td><span class="pre_info">订阅: </span>
+		<?php 
+		if ($this->row->paid_flag==0) {echo "No";}else {echo "Yes";}		
+		?>
+		</td>
+		</tr>
+		<tr>
+		<td><span class="pre_info">生肖 : </span>
+		<?php 
+		echo Model_Animal::getName($this->row->animal);
+		?>
+		</td>
+		<td><span class="pre_info">星座 : </span>
+		<?php 
+		echo Model_Star::getName($this->row->star);
+		?>
+		</td>
+		<td><span class="pre_info">最近登录时间 : </span>
+		<?php echo $this->row->last_visit;?>
+		</td>
+		</tr>		
+		
+		<tr>
+		<td colspan='4'><span class="pre_info">内心独白 : <br/><br/></span>
+		<div class="details"><?php echo $this->row->me;?><br/><br/><br/>
+		<?php 
+		if ($this->row->hobby!='') {
+		echo "<span class='pre_info'>兴趣爱好 : <br/></span>".$this->row->hobby.'<br/><br/><br/>';	
+		}
+		if ($this->row->love!='') {
+			echo "<span class='pre_info'>理想伴侣  : <br/></span>
+			{$this->row->love}<br/><br/><br/>";
+		}
+		?>
+		</div>
+		</td>
+		</tr>
+</table><br/>
+</div>
+<div class='img_box'>
+<?php if (count($this->images)!=0): ?>
+ <fieldset class="attachfields">
+	<legend>相关图片</legend>
+	<ul class="attach_list">
+	<?php 
+	foreach ($this->images as $image) {
+		$imgUrl=$this->baseUrl()."/upload_img/img/".$this->row->id.'/'.$image;	
+		
+		list($width, $height, $type, $attr) = getimagesize(ROOT.'/public'.$imgUrl);
+		$thumbWidth=120;
+      	// calculate thumbnail size
+      	$new_width = $thumbWidth;
+	 	if ($width!=0) {
+      	$new_height = floor( $height * ( $thumbWidth / $width ) );
+      	} else { $new_height=0;$new_width=0;}
+		
+		
+		
+		echo "<li><a href='$imgUrl' title='点击查看图片' target='_blank'><img src='$imgUrl' width='$new_width' height='$new_height' border='0' /></a></li>";
+	}
+	?>
+	</ul>
+ </fieldset>
+<?php endif; ?>
+</div>
+</td>
+</tr>
+</table>
+
+<style>
+
+.table_list table{
+width:98%;
+}
+
+.details {
+/* overflow:scroll; */
+min-height:400px;
+}
+
+#c3 {
+float:right;	
+margin-right:20px;
+}
+
+.head_title {
+padding-left:8px;
+font-size:13px;
+font-weight:bold;
+color:#FF6600;
+}
+
+</style>
+

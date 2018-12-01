@@ -1,0 +1,358 @@
+<?php $this->headTitle('佳丽婚介 - 高级搜索'); ?>
+<center>
+<div class="searchBox">
+<div class="sign">
+<form name='searchId' action='/index/display' method='post'>
+<table class='searchById'>
+<tr class='search_head'><th>::按会员ID或电邮搜索::</th></tr>
+<tr><td><input size="28" name='uid' maxlength="30"></td></tr>
+<tr><td><input type="image" src="/images/caclass/search.gif" name="submit" id="send" />
+</td>
+</tr>
+</table>
+</form>
+
+
+<br/>
+<img alt="" src="/images/caclass/heart.jpg" />
+</div>
+<form name='searchfm' action='/index/result' method='post'>
+
+<table class='seek_tb'>
+<tr class='search_head'><th>::高级搜索::</th></tr>
+<tr>
+
+<td width='700'>
+我要找<select name="gender" id="gender" class='search_cell'>
+<option value="2">女朋友</option>
+<option value="1">男朋友</option>
+</select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+年龄
+<select name="age" id="age" class='search_cell'>
+<option value="16">16</option><option value="17">17</option>
+
+<option value="18" selected>18</option><option value="19">19</option><option value="20">20</option>
+<option value="21">21</option><option value="22">22</option><option value="23">23</option>
+<option value="24">24</option><option value="25">25</option><option value="26">26</option>
+<option value="27">27</option><option value="28">28</option><option value="29">29</option>
+<option value="30">30</option><option value="31">31</option><option value="32">32</option>
+<option value="33">33</option><option value="34">34</option><option value="35">35</option>
+<option value="36">36</option><option value="37">37</option><option value="38">38</option>
+<option value="39">39</option><option value="40">40</option><option value="41">41</option>
+<option value="42">42</option><option value="43">43</option><option value="44">44</option>
+<option value="45">45</option><option value="46">46</option><option value="47">47</option>
+<option value="48">48</option><option value="49">49</option><option value="50">50</option>
+<option value="51">51</option><option value="52">52</option><option value="53">53</option>
+<option value="54">54</option><option value="55">55</option><option value="56">56</option>
+<option value="57">57</option><option value="58">58</option><option value="59">59</option>
+<option value="60">60</option><option value="61">61</option><option value="62">62</option>
+<option value="63">63</option><option value="64">64</option><option value="65">65</option>
+</select>
+
+岁 至 
+<select name="maxage" id="maxage" class='search_cell'>
+<option value="16">16</option><option value="17">17</option>
+
+<option value="18">18</option><option value="19">19</option><option value="20">20</option>
+<option value="21">21</option><option value="22">22</option><option value="23">23</option>
+<option value="24">24</option><option value="25">25</option><option value="26">26</option>
+<option value="27">27</option><option value="28" selected>28</option><option value="29">29</option>
+<option value="30">30</option><option value="31">31</option><option value="32">32</option>
+<option value="33">33</option><option value="34">34</option><option value="35">35</option>
+<option value="36">36</option><option value="37">37</option><option value="38">38</option>
+<option value="39">39</option><option value="40">40</option><option value="41">41</option>
+<option value="42">42</option><option value="43">43</option><option value="44">44</option>
+<option value="45">45</option><option value="46">46</option><option value="47">47</option>
+<option value="48">48</option><option value="49">49</option><option value="50">50</option>
+<option value="51">51</option><option value="52">52</option><option value="53">53</option>
+<option value="54">54</option><option value="55">55</option><option value="56">56</option>
+<option value="57">57</option><option value="58">58</option><option value="59">59</option>
+<option value="60">60</option><option value="61">61</option><option value="62">62</option>
+<option value="63">63</option><option value="64">64</option><option value="65">65</option>
+</select>岁
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<?php 
+$rows=array(-1=>"都可以")+Model_Country::getRows();
+?>
+居住地<select name="country" id="country" class='search_cell'>
+<?php foreach ($rows as $i=>$nation):?>	
+<option value="<?php echo $i;?>"><?php echo $nation;?></option>;
+<?php endforeach; ?>
+</select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+国籍<select name="nation" class='search_cell'>
+<?php foreach ($rows as $i=>$nation):?>	
+<option value="<?php echo $i;?>"><?php echo $nation;?></option>;
+<?php endforeach; ?>
+</select>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input name="pic" value="1" id="head" checked="1" type="checkbox">有照片
+</td>
+</tr>
+
+<tr>
+<td>
+<?php 
+$edu=Model_Education::getAll();
+$edu=array(-1=>"都可以")+$edu;
+?>
+教育程度<select name="edu" id="edu" class='search_cell'>
+<?php foreach ($edu as $i=>$ed):?>	
+<option value="<?php echo $i;?>"><?php echo $ed;?></option>;
+<?php endforeach; ?>
+</select>
+<?php 
+$ethics=Model_Ethics::getAll();
+$ethics=array(-1=>"都可以")+$ethics;
+?>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+祖籍<select name="ethic" id="ethic" class='search_cell'>
+<?php foreach ($ethics as $i=>$eth):?>	
+<option value="<?php echo $i;?>"><?php echo $eth;?></option>;
+<?php endforeach; ?>
+</select>
+<?php 
+$marrs=array(-1=>"都可以")+Model_Status::getAll()
+?>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+婚姻状况<select name="marr" id="marr" class='search_cell'>
+<?php foreach ($marrs as $i=>$mar):?>	
+<option value="<?php echo $i;?>"><?php echo $mar;?></option>;
+<?php endforeach; ?>
+</select>
+<?php 
+$chs=array(-1=>"都可以",0=>'没有',1=>'有-不住家里',2=>'有-有时住在家里',3=>'有-住在家里');
+?>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+有无小孩<select name="child" id="child" class='search_cell'>
+<?php foreach ($chs as $i=>$ch):?>	
+<option value="<?php echo $i;?>"><?php echo $ch;?></option>;
+<?php endforeach; ?>
+</select>
+
+</td>
+</tr>
+<tr>
+<td>
+<?php 
+$drs=array(-1=>'都可以',0=>'没有',1=>'有',2=>'有时候');
+?>
+酗酒否<select name="drink" id="drink" class='search_cell'>
+<?php foreach ($drs as $i=>$dr):?>	
+<option value="<?php echo $i;?>"><?php echo $dr;?></option>;
+<?php endforeach; ?>
+</select>
+<?php 
+$smks=array(-1=>'都可以',0=>'不抽烟',1=>'有时候',2=>'经常抽烟');
+?>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+吸烟否<select name="smoke" id="smoke" class='search_cell'>
+<?php foreach ($smks as $i=>$smk):?>	
+<option value="<?php echo $i;?>"><?php echo $smk;?></option>;
+<?php endforeach; ?>
+</select>
+<?php 
+$animals=array(-1=>'都可以')+Model_Animal::getAll();
+?>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+生肖<select name="animal" id="animal" class='search_cell'>
+<?php foreach ($animals as $i=>$animal):?>	
+<option value="<?php echo $i;?>"><?php echo $animal;?></option>;
+<?php endforeach; ?>
+</select>
+<?php 
+$stars=array(-1=>'都可以')+Model_Star::getAll();
+?>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+星座<select name="star" id="star" class='search_cell'>
+<?php foreach ($stars as $i=>$star):?>	
+<option value="<?php echo $i;?>"><?php echo $star;?></option>;
+<?php endforeach; ?>
+</select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="image" src="/images/caclass/search.gif" name="submit" id="send" />
+
+</td>
+</tr>
+</table>
+
+</div>
+</form>
+
+<?php 
+$obj=new Model_Member();
+$rows=$obj->getRecent(12);
+
+?>
+
+<div class='cls'></div>
+
+<span class='reco1'>
+<img src="/images/caclass/reco1.gif">
+</span>
+
+<div class='icons_box'>
+
+<?php if (count($rows)!=0)
+	
+	foreach ($rows as $k=>$row) {
+        $dir="upload_img/ids/{$row->id}.jpg";
+        if (file_exists($dir)) {
+     //    die('here');
+
+		$imgUrl='/'.$dir;	
+		} else if ($row->sex==1) {
+			$imgUrl=$this->baseUrl()."/images/caclass/".'man.jpg';
+		} else {
+			
+          $imgUrl=$this->baseUrl()."/images/caclass/".'girl.jpg';
+		}
+		
+		$Url='/index/show/id/'.$row->id;
+
+                /*
+		
+		list($width, $height, $type, $attr) = getimagesize(ROOT.'/public'.$imgUrl);
+		$thumbWidth=140;
+      	// calculate thumbnail size
+      	$new_width = $thumbWidth;
+	 	if ($width!=0) {
+      	$new_height = floor( $height * ( $thumbWidth / $width ) );
+      	} else { $new_height=0;$new_width=0;}
+        */
+
+      	$name='';
+      	$nation=Model_Country::getName($row->nationality);
+      	if ($nation) {
+      		$name.="国籍：$nation";
+      	}
+		
+		$sex=Model_Sex::getName($row->sex);
+		if ($sex) {
+			$name.='， 性别：'.$sex;
+		}
+		$name.="， 身高(cm)：$row->height";
+		
+		$date = new DateTime($row->birth);
+		$now = new DateTime();
+		$interval = $now->diff($date);
+		
+		$name.="， 年龄：$interval->y";
+		$education=Model_Education::getName($row->edu);
+		if ($education) {
+			$name.="， 学历：$education";
+		}
+		
+		echo "<div class='icons'>
+		<a href='$Url' target='_blank'>
+		<img title='$name' src='$imgUrl' width='150' height='150' border='0' />
+		</a>
+		<br/><div class='icons_desc'>
+		{$interval->y}岁 国籍：$nation</div>
+		
+		<a href='$Url' target='_blank'>
+		<img src='/images/caclass/more.jpg'/>
+		</a>
+		
+		</div>";
+	}
+?>
+
+</div>
+
+<div class='cls'></div>
+
+<br/>
+
+<div class='ok'>
+
+<a target="_blank" href='http://www.myca168.com'><img src="/images/caclass/ads168.jpg"></a>
+
+</div>
+</div>
+
+</center>
+
+
+
+<style>
+.seek_tb {
+margin-top:10px;
+width:700px;
+border:1px solid #F7EBC2; 
+text-align:left;
+color:grey;
+display: table-cell;
+vertical-align: middle;
+}
+
+.seek_tb td {
+padding:10px;
+}
+
+.searchById td {
+padding:3px;
+
+}
+.searchById {
+border:1px solid #F7EBC2; 
+width:200px;
+}
+
+.search_head {
+background-color:#FEE298;
+color:#9A3A2A;
+font-weight:bold;
+}
+
+.notall {
+background:url(/images/caclass/start.jpg) no-repeat;
+width:170px;
+height:27px;
+text-align: center;
+color:white;
+}
+
+.icons_desc{
+margin:5px 0 3px 0;
+color:#9F330E;
+}
+
+.searchBox {
+margin-top:10px;
+}
+
+.sign {
+float:left;
+margin-left:25px;
+
+}
+
+.ok {
+padding:5px;
+}
+
+.icons_box {
+width:930px;
+float:right;
+margin-top:15px;
+}
+
+.icons {
+float:left;
+border:1px solid #F7EBC2; 
+magin-right:1px;
+text-align:center;
+}
+
+.reco1 img{
+padding:13px 0 0 5px;
+float:left;
+}
+
+
+</style>
+

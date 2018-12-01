@@ -1,0 +1,57 @@
+<?php
+echo $this->doctype ();
+
+$encoding = $this->getEncoding ();
+if ($encoding) {
+	header ( 'Content-Type: text/html; charset=' . $encoding );
+	$this->headMeta ()->prependHttpEquiv ( 'Content-Type', 'text/html; charset=' . $encoding );
+}
+?>
+<html>
+<head>
+
+<?php
+
+
+//$this->headLink ()->appendStylesheet ( '/css/ui-lightness/jquery-ui-1.8.2.custom.css' );
+$this->headLink ()->appendStylesheet ( '/css/style_yui.css' );
+$this->headLink ()->appendStylesheet ( '/css/caclass.css' );
+
+//$this->headScript ()->appendFile ( '/js/jquery-1.3.2.js' );
+//$this->headScript ()->appendFile ( '/js/jquery-ui-1.7.2.js' );
+//$this->headScript ()->appendFile ( '/js/cookie.js' );
+//$this->headScript ()->appendFile ( '/js/app.js' );
+
+$keywords=Model_Site::getRow(Model_Site::SITE_KEYWORDS)->detail;
+$descriptions=Model_Site::getRow(Model_Site::SITE_DESC)->detail;
+$this->headMeta()->appendName("keywords", $keywords);
+$this->headMeta()->appendName("description",$descriptions);
+
+//echo $this->jQuery (), "\n";
+echo $this->headMeta (), "\n";
+echo $this->headTitle (), "\n";
+echo $this->headStyle (), "\n";
+echo $this->headLink (), "\n";
+//echo $this->headScript (), "\n";
+
+?>
+</head>
+
+<body>
+<center><br/>
+<?php
+$domain=Model_Site::getRow(Model_Site::SITE_DOMAIN); 
+?>
+<br/><b class='tda'>查看更多信息，请访问  www.<?php echo $domain->detail;?> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+<a class="print_btn" href="javascript:print()">【打印】</a></b>
+
+<span class='tda sp30'><a href="javascript:window.close();">【关闭】</a></span>
+
+<br/>
+<?php echo $this->layout()->content;?>
+
+
+</center>
+</body>
+
+</html>

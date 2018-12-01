@@ -1,0 +1,394 @@
+<?php $this->headTitle('会员信息'); ?>
+<?php 
+$id=0;
+$chk=false;
+$agent=false;
+$pflag=0;
+if (Zend_Auth::getInstance()->hasIdentity ()) {
+	$id=Zend_Auth::getInstance()->getIdentity ()->id;
+	$user=Model_Member::getUserById($id);
+	$pflag=$user->paid_flag;
+	$role=Zend_Auth::getInstance()->getIdentity ()->role_id;
+	$arr=array(
+			Caclass_Acl::ROLE_BILLING,
+			Caclass_Acl::ROLE_MANAGER,
+			Caclass_Acl::ROLE_ADMIN,
+			);
+	if (in_array($role, $arr)){
+			$chk=true;
+	}
+}
+
+
+$addUrl = $this->url(
+		array(
+				'module'=>'default',
+				'controller' => 'member',
+				'action' => 'msg',
+				'id' => $this->row->id,
+				'format' => 'json'
+		),
+		null,
+		true
+);
+
+$toUrl = $this->url(
+		array(
+				'module'=>'default',
+				'controller' => 'index',
+				'action' => 'show',
+				'id' => $this->row->id,
+		),
+		null,
+		true
+);
+
+$pUrl = $this->url(
+		array(
+				'module'=>'default',
+				'controller' => 'member',
+				'action' => 'subscribe',
+				'id' => $this->row->id
+		),
+		null,
+		true
+);
+
+
+
+?>
+
+<span class='popup'></span>
+
+<table class='frame'>
+<tr>
+<td>
+<div class="table_list">
+<?php 
+echo "<span class='head_title'>{$this->row->title}</span><br/>";
+?>
+<table cellspacing="0">
+		<tr>
+		<td><span class="pre_info">会员ID : </span>
+		<?php
+		echo $this->row->id;
+		?>
+		</td>
+		
+		<td><span class="pre_info">现居住地: </span>
+		<?php 
+		$cn=Model_Country::getName($this->row->country);
+		if ($cn) {
+			$residence=$cn.$this->row->city;
+		}
+		echo $residence;
+		?>
+		</td>
+		<td><span class="pre_info">国籍 : </span>
+		<?php echo Model_Country::getName($this->row->nationality);?>
+		</td>
+		<td width="150" rowspan='7'>
+		<?php 
+		$logofile="upload_img/ids/".$this->row->id.".jpg";
+		    if (file_exists($logofile)) {
+		    echo "<img align='center' width='150' height='150' src='/upload_img/ids/".$this->row->id.".jpg'/>";
+		    } else {
+			echo "<img align='center' width='150' height='150' src='/images/caclass/default.jpg'/>";
+		    }
+		?>
+		<img id='msg' align='center' width='150' src='/images/caclass/email.gif'/>
+		</td>
+		</tr>
+		<tr>
+		<td><span class="pre_info">性别 : </span>
+		<?php 
+		echo Model_Sex::getName($this->row->sex);
+		?>
+		</td>
+		<td><span class="pre_info">身高(cm): </span>
+		<?php 
+		echo $this->row->height;
+		?>
+		</td>
+		<td><span class="pre_info">年龄: </span>
+		<?php 
+		$date = new DateTime($this->row->birth);
+		$now = new DateTime();
+		$interval = $now->diff($date);
+		echo $interval->y;
+		
+		?>
+		</td>
+		</tr>
+		<tr>
+		<td><span class="pre_info">学历 : </span>
+		<?php 
+		echo Model_Education::getName($this->row->edu);
+		?>
+		</td>
+		<td><span class="pre_info">婚姻状况 : </span>
+		<?php 
+		echo Model_Status::getName($this->row->marriage);
+		?>
+		</td>
+		<td><span class="pre_info">生肖 : </span>
+		<?php 
+		echo Model_Animal::getName($this->row->animal);
+		?>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="pre_info">星座 : </span>
+		<?php 
+		echo Model_Star::getName($this->row->star);
+		?>
+		</td>
+		
+		</tr>
+		<tr>
+		<td><span class="pre_info">祖籍: </span>
+		<?php 
+		echo Model_Ethics::getName($this->row->ethics);
+		?>
+		</td>
+		<td><span class="pre_info">信仰 : </span>
+		<?php 
+		echo Model_Religion::getName($this->row->religion);
+		?>
+		</td>
+		<td><span class="pre_info">职业 : </span><?php echo $this->row->job;?></td>		
+		</tr>
+		
+		<tr>
+		<td><span class="pre_info">体重(KG) : </span><?php 
+		if ($this->row->weight!=0) {
+		echo $this->row->weight;
+		}
+		?>
+		</td>
+		<td><span class="pre_info">有无小孩 :  
+		<?php 
+		$child="没有";
+		if ($this->row->child==1) {$child='有-不住家里';}
+		if ($this->row->child==2) {$child='有-有时住在家里';}
+		if ($this->row->child==3) {$child='有-住在家里';}
+		echo $child;
+		?>
+		</span>
+		</td>
+		<td><span class="pre_info">年收入 : </span>
+		<?php 
+		if ($this->row->pay!=0) {
+		echo $this->row->pay;
+		}
+		?>
+		</td>
+		</tr>
+		<tr>
+		<td><span class="pre_info">中文: </span>
+		<?php 
+		echo Model_Chinese::getName($this->row->chinese);
+		?></td>
+		<td><span class="pre_info">英文 : </span>
+		<?php 
+		echo Model_English::getName($this->row->english);
+		?>
+		</td>
+		<td><span class="pre_info">最近登录时间 :  </span>
+		<?php echo $this->row->last_visit;?>
+		</td>
+		</tr>
+		<tr>
+		<td><span class="pre_info">是否酗酒 : </span>
+		<?php 
+		$drink='没有';
+		if ($this->row->drink==1) {$drink='有';}
+		if ($this->row->drink==2) {$drink='有时候';}
+		echo $drink;
+		?>
+		</td>
+		<td><span class="pre_info">吸烟否 : </span>
+		<?php 
+		$smoke='不抽烟';
+		if ($this->row->drink==1) {$smoke='有时候';}
+		if ($this->row->drink==2) {$smoke='经常抽烟';}
+		echo $smoke;
+		?>
+		</td>
+		<td><span class="pre_info">注册日期 : </span><?php echo $this->row->created_date;?>
+		</td>
+		</tr>
+		<tr>
+		<td colspan='4'><span class="pre_info">内心独白 : <br/><br/></span>
+		<div class="details"><?php echo $this->row->me;?><br/><br/><br/>
+		<?php 
+		if ($this->row->hobby!='') {
+		echo "<span class='pre_info'>兴趣爱好 : <br/></span>".$this->row->hobby.'<br/><br/><br/>';	
+		}
+		if ($this->row->love!='') {
+			echo "<span class='pre_info'>理想伴侣  : <br/></span>
+			{$this->row->love}<br/><br/><br/>";
+		}
+		?>
+		</div>
+		</td>
+		</tr>
+</table><br/>
+</div>
+<div class='img_box'>
+<?php if (count($this->images)!=0): ?>
+ <fieldset class="attachfields">
+	<legend>相关图片</legend>
+	<ul class="attach_list">
+	<?php 
+	foreach ($this->images as $image) {
+		$imgUrl=$this->baseUrl()."/upload_img/img/".$this->row->id.'/'.$image;	
+		
+		list($width, $height, $type, $attr) = getimagesize(ROOT.'/public'.$imgUrl);
+		$thumbWidth=120;
+      	// calculate thumbnail size
+      	$new_width = $thumbWidth;
+	 	if ($width!=0) {
+      	$new_height = floor( $height * ( $thumbWidth / $width ) );
+      	} else { $new_height=0;$new_width=0;}
+		
+		
+		
+		echo "<li><a href='$imgUrl' title='点击查看图片' target='_blank'><img src='$imgUrl' width='$new_width' height='$new_height' border='0' /></a></li>";
+	}
+	?>
+	</ul>
+ </fieldset>
+<?php endif; ?>
+</div>
+</td>
+</tr>
+</table>
+
+<style>
+
+.table_list table{
+width:98%;
+}
+
+.details {
+/* overflow:scroll; */
+min-height:400px;
+}
+
+#c3 {
+float:right;	
+margin-right:20px;
+}
+
+.head_title {
+padding-left:8px;
+font-size:13px;
+font-weight:bold;
+color:#FF6600;
+}
+
+#msg {
+cursor:pointer;	
+color:red;
+}
+
+
+dd {
+	padding: 0;
+	margin-bottom:10px;
+}
+
+dt label,.dt_lbl {
+	font-weight: bold;
+	font-size: 12px;
+	width:60px;
+	padding-top:5px;
+	padding-right:5px;
+	text-align:right;
+	float:left;
+}
+
+#pop_btn {
+margin-left: 65px;	
+}
+
+.ui-dialog-title {
+text-align:left;
+}
+
+.zend_form {
+text-align:left;
+}
+
+
+</style>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+	$(".popup").dialog({
+        bgiframe: true,
+        autoOpen: false,
+        height: 300,
+        minWidth: 500,
+        maxWidth: 500,
+        width: 500,
+        modal: true
+    });
+
+	$(".popup").dialog('option', 'title', '发短信息');
+
+	$("#msg").click(function() {
+		var id = <?php echo $id;?>;
+		if (!id) {
+	 	 	alert("对不起，要先登录后才能发短信!");
+	 	 	return false;
+	 	}
+
+		var pid = <?php echo $pflag;?>;
+		if (pid==0) {
+			window.location.href="<?php echo $pUrl; ?>";
+			return false;
+		}
+		
+		$.ajax({
+			url: "<?php echo $addUrl; ?>",
+			dataType: 'json',
+			success: function(data) {
+				configForm(data['form'], "<?php echo $addUrl; ?>");
+				$(".popup").dialog("open");
+			}
+		});
+	});
+
+});
+
+function configForm (formHtml, submitToUrl) {
+	// add the form HTML to the dialog
+	$(".popup").html(formHtml);
+	
+	
+	//put in place the click handler on the form's submit button
+	$("#pop_btn").click(function() { 
+
+		$.ajax({
+			type: 'POST',
+			url: submitToUrl,
+			data: $(".comments").serialize(),
+			dataType: 'json',
+			success: function(data) {
+				if (data['success_flag'] == 0) {
+					configForm(data['form'], submitToUrl);
+				} else {
+					$(".popup").dialog("close");
+					 alert('您的短信已经发送！');
+					 window.location.href="<?php echo $toUrl; ?>";
+				}
+			}
+		});
+		
+		return false;
+	});
+}
+	
+</script>
+

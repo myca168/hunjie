@@ -1,0 +1,131 @@
+<?php $this->headTitle('同城活动'); ?>
+<?php 
+$id=0;
+if (Zend_Auth::getInstance()->hasIdentity ()) {
+	$id=Zend_Auth::getInstance()->getIdentity ()->id;
+}
+?>
+<table class="frame">
+<tr>
+
+<td>
+<div class="rightc"><span class="enter" id="admin">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+【管理中心】</span><span class="enter" id="new">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+【发布信息】</span>
+</div>
+<br/>
+
+<div class='clear'></div>
+
+<?php if (count($this->rows)>0): ?>
+
+<div class="hastable">
+<table cellspacing="0">
+		<thead>
+		<tr>
+			<td class="list_c1">同城活动 / 时间 / 地点</td>
+			<td class="list_c2">简单介绍</td>
+		</tr>
+		</thead>
+	  <tbody>
+		<?php foreach ($this->rows as $i=>$row): ?>
+			<tr>
+			<td width="50%">
+			<div class="desc">
+			<a href="/event/view/id/<?php echo $row->id;?>">
+			<?php echo $row->title; ?>
+			</a><br/>
+			<span class="pre_info">活动日期：</span>
+			<?php echo date('Y-m-d',strtotime($row->start_date)).' 至 '.date('Y-m-d',strtotime($row->end_date));?>
+			<br/><span class="pre_info">活动时间：</span>
+			<?php 
+			echo $row->time1.":".$row->min1.' 至 '.$row->time2.":".$row->min2;
+			?>
+			<br/><span class="pre_info">活动地点：</span>
+			<?php echo $row->address; ?>
+			<br/><span class="pre_info">所在地区：</span>
+			<?php 
+				$cityid=$row->city;
+				$city=Model_City::getCity($cityid);
+				echo $city->name;
+			?>
+			</div>
+			</td>
+			<td>
+			<div class="desc">
+			<?php 
+				$string=strip_tags($row->details);
+				echo substr($string, 0, 500).' ......';
+                        //        $string=mb_strcut($row->details, 0, 500, 'utf-8');
+			  //      echo  $string;
+
+				?>
+			</div>	
+			</td>
+			</tr>
+			
+		<?php endforeach; ?>
+	  </tbody>
+	</table><br/>  	
+	
+	<?php
+	echo $this->paginationControl($this->rows, 'Sliding', 'pagination.phtml');
+	?>
+	
+</div>
+
+<?php else : ?>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当地没有同城活动信息 !
+
+<?php endif;?>
+
+</td>
+</tr>
+</table>
+<style>
+
+.rightc {
+float:right;	
+}
+
+.pagination{
+margin-left:30%;	
+}
+
+.desc {
+padding:5px;
+
+}
+
+.desc a {
+color:red;	
+}
+
+
+</style>
+<script type="text/javascript">
+
+$(".enter").click(function(){
+ 	var id = <?php echo $id;?>;
+ 	var type=$(this).attr("id");
+
+ 	if (!id) {
+ 	 	alert("您不是会员, 请先登录或注册。 谢谢!");
+ 	 	return false;
+ 	}
+
+ 	if ( type == "admin") {
+ 	 	var url="<?php echo $this->baseUrl().'/event/admin';?>";
+ 		window.location.href = url; 
+ 	}
+
+ 	if ( type == "new") {
+ 	 	var url="<?php echo $this->baseUrl().'/event/add';?>";
+ 		window.location.href = url; 
+ 	}
+	return false;
+ 	
+});
+
+</script>
+

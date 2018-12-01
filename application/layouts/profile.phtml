@@ -1,0 +1,94 @@
+<?php
+echo $this->doctype ();
+
+$encoding = $this->getEncoding ();
+if ($encoding) {
+	header ( 'Content-Type: text/html; charset=' . $encoding );
+	$this->headMeta ()->prependHttpEquiv ( 'Content-Type', 'text/html; charset=' . $encoding );
+}
+?>
+<html>
+<head>
+<?php
+
+$this->headLink()->appendStylesheet('/css/ui-lightness/jquery-ui-1.10.3.custom.css');
+$this->headLink ()->appendStylesheet ( '/css/style_yui.css' );
+$this->headLink ()->appendStylesheet ( '/css/caclass.css' );
+
+$this->headScript()->appendFile('/js/jquery-1.9.1.js');
+$this->headScript()->appendFile('/js/jquery-ui-1.10.3.custom.js');
+$this->headScript()->appendFile('/js/app.js');
+
+$keywords = Model_Site::getRow ( Model_Site::SITE_KEYWORDS )->detail;
+$descriptions = Model_Site::getRow ( Model_Site::SITE_DESC )->detail;
+$this->headMeta ()->appendName ( "keywords", $keywords );
+$this->headMeta ()->appendName ( "description", $descriptions );
+
+echo $this->jQuery (), "\n";
+echo $this->headMeta (), "\n";
+echo $this->headTitle (), "\n";
+echo $this->headStyle (), "\n";
+echo $this->headLink (), "\n";
+echo $this->headScript (), "\n";
+
+$chk=false;
+$arr=array();
+$role=array();
+if (Zend_Auth::getInstance()->hasIdentity ()) {
+	$id=Zend_Auth::getInstance()->getIdentity ()->id;
+	$role=Zend_Auth::getInstance()->getIdentity ()->role_id;
+	$arr=array(
+			Caclass_Acl::ROLE_MANAGER,
+			Caclass_Acl::ROLE_ADMIN
+			);
+	if (in_array($role, $arr)){
+			$chk=true;
+	}
+}
+
+?>
+</head>
+
+<body>
+
+<!-- Use YUI 2 Columns (180px left) By William -->
+
+
+<div id="doc4" class="yui-t2">
+
+<?php include ('header.phtml'); ?>
+
+
+
+<div id='bd'>
+<div id="yui-main"> 
+<div class="yui-b sp30">
+
+<?php echo $this->layout()->content;?>
+
+
+</div> 
+</div> 
+<div class="yui-b">
+
+<div class="unit unit3">
+<div class="title"><span class="titletext"><a href=""><?php echo $this->menutitle;?></a></span></div>
+<div class="unit_bc">
+<div class="module ">
+<?php echo $this->left;?>
+</div>
+</div>
+</div>
+<?php echo $this->search;?>
+
+
+</div> 
+				
+</div>
+<div id="ft">
+<p id="power_by"><?php include('footer.phtml');?></p>
+</div>
+
+</div>
+</body>
+</html>

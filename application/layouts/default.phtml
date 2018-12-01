@@ -1,0 +1,56 @@
+<?php
+echo $this->doctype ();
+
+$encoding = $this->getEncoding ();
+if ($encoding) {
+	header ( 'Content-Type: text/html; charset=' . $encoding );
+	$this->headMeta ()->prependHttpEquiv ( 'Content-Type', 'text/html; charset=' . $encoding );
+}
+?>
+<html>
+<head>
+<?php
+$this->headLink()->appendStylesheet('/css/ui-lightness/jquery-ui-1.10.3.custom.css');
+$this->headLink ()->appendStylesheet ( '/css/style_yui.css' );
+$this->headLink ()->appendStylesheet ( '/css/caclass.css' );
+
+$this->headScript()->appendFile('/js/jquery-1.9.1.js');
+$this->headScript()->appendFile('/js/jquery-ui-1.10.3.custom.js');
+$this->headScript()->appendFile('/js/app.js');
+
+
+$keywords=Model_Site::getRow(Model_Site::SITE_KEYWORDS)->detail;
+$descriptions=Model_Site::getRow(Model_Site::SITE_DESC)->detail;
+$this->headMeta()->appendName("keywords", $keywords);
+$this->headMeta()->appendName("description",$descriptions);
+
+
+echo $this->jQuery (), "\n";
+echo $this->headMeta (), "\n";
+echo $this->headTitle (), "\n";
+echo $this->headStyle (), "\n";
+echo $this->headLink (), "\n";
+echo $this->headScript (), "\n";
+
+?>
+</head>
+
+
+<body>
+
+<div id="doc4">
+
+<?php include('header.phtml');?>
+
+	<div id='bd'>
+		<?php echo $this->layout()->content;?>
+
+	</div>
+
+	<div id="ft">	
+	 <p id="power_by"><?php include('footer.phtml');?></p>
+	</div>
+
+</div>
+</body>
+</html>

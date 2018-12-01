@@ -1,0 +1,70 @@
+<?php $this->headTitle('会员登记'); ?>
+
+<div class='back'><a href="javascript:history.go(-1)">【返回】</a></div>
+
+&nbsp;<a href="<?php echo $this->baseUrl();?>/member">新会员 </a>&gt;&gt; 注册 
+<hr/>
+
+
+<div class="post_notes">
+<?php 
+$link="
+<ul>
+<li>请阅读用户条约。</li>
+<li>电话、电邮和姓名不公开。</li>
+<li>出生日期不公开，仅显示年龄。</li>		
+<li>其他信息将公开显示。</li>
+<li>身高、体重和收入均为整数。</li>				
+<li>红色显示字段为必填项。</li>
+<li>内心独白/简介不含联系信息。</li>	
+</ul>";
+?>
+
+<div class="unit unit3">
+<div class="title"><span class="titletext"><a href="">表单填写说明</a></span></div>
+<div class="unit_bc">
+<div class="module ">
+<?php echo $link; ?>
+</div>
+</div>
+</div>
+
+<br/>
+
+</div>
+
+
+<?php 
+echo $this->form->displayErrorBox();
+echo $this->form;
+
+?>
+
+
+
+<style>
+
+#bd {
+background-color:#F8F8F8;	
+}
+
+.bigform .label_c1 {
+width:120px;
+text-align:right;	
+padding-top:5px;
+padding-right:5px;
+}
+
+.bigform .field_c2 {
+padding-top:5px;
+} 
+
+.verify img {
+margin-bottom:-5px;	
+}
+
+.c3txt{
+padding-left:15px;
+}
+
+</style>

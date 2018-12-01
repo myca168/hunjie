@@ -1,0 +1,74 @@
+<?php 
+$this->menutitle="档案资料";
+$this->left=$this->profile();
+?>
+<br/>
+<div class='photo profile'>最大2Mb，为了您的页面美观，建议上传5张尺寸相同的图片 :<br/>
+</div>
+   <?php 
+   if ($this->errors){
+   echo "<span class='uploadErr'>".$this->errors."</span>";
+   }
+   ?>
+   <br/>
+   <?php 
+   if ($this->msg!='') {
+   echo '<span class="alert">'.$this->msg.'</span><br/><br/>';
+   }
+   echo $this->form;
+   
+   ?>
+<br/>
+
+
+<div class='img_box'>
+<?php if (count($this->images)!=0): ?>
+ <fieldset class="attachfields">
+	<legend>相关图片</legend>
+	<ul class="attach_list">
+	<?php 
+	foreach ($this->images as $image) {
+		$imgUrl=$this->baseUrl()."/upload_img/img/".$this->id.'/'.$image;	
+		
+		list($width, $height, $type, $attr) = getimagesize(ROOT.'/public'.$imgUrl);
+		$thumbWidth=120;
+      	// calculate thumbnail size
+      	$new_width = $thumbWidth;
+	 	if ($width!=0) {
+      	$new_height = floor( $height * ( $thumbWidth / $width ) );
+      	} else { $new_height=0;$new_width=0;}
+      	
+      	$rest = substr($image,0,-4);
+      	$rmUrl='/profile/rmfile/dir/'.$this->id.'/id/'.$rest;
+		
+		
+		
+		echo "<li><a href='$imgUrl' title='查看图片' target='_blank'><img src='$imgUrl' width='$new_width' height='$new_height' border='0' /></a>
+		
+		<br/><a class='rm' href='$rmUrl'>【删除】</a>
+		</li>";
+	}
+	?>
+	</ul>
+ </fieldset>
+<?php endif; ?>
+</div>
+
+<style>
+#new_btn{
+*margin-left:10px;	
+}
+.img_box {
+margin-right:80px;
+}
+.rm {
+padding-left:40px;
+}
+</style>
+
+ <script type="text/javascript">
+        $(document).ready(function(){
+                 location.reload(true);
+            }
+        });
+ </script> 

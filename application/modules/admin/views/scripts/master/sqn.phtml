@@ -1,0 +1,79 @@
+<br/>
+<form name='searchId' action='/admin/master/search' method='post'>
+<table class='searchById'>
+<tr class='search_head'><th>按ID或电邮搜索： 
+<input size="28" name='uid' maxlength="30">
+<input type="image" src="/images/caclass/search.gif" name="submit" id="send" /></th></tr>
+</tr>
+</table>
+</form>
+
+<br/>
+
+<?php 
+$this->menutitle=" 管理中心";
+
+$this->left=
+"<ul>
+<li><a href='/admin' class='link'><img
+src='/images/icons/lock_edit.png' class='icon' />数据列表 </a></li>
+<li><a href='/admin/master/sqn' class='link'><img
+src='/images/icons/lock_edit.png' class='icon' />特别推荐会员 </a></li>	
+<li><a href='/admin/master/order' class='link'><img
+src='/images/icons/lock_edit.png' class='icon' />特别推荐排序 </a></li>				
+</ul>";
+
+?>
+
+
+
+ <b><i>记录一览表 :</i></b>
+<div class="hastable">
+<table cellspacing="0">
+	  <thead>
+		<tr>
+		<td width="12%">个人头像</td>
+		<td width="1%">ID</td>
+		<td width="30%">电邮</td>
+		<td width="20%">简介</td>
+		<td width="8%">角色</td>
+		<td width="8%">状态</td>
+		<td colspan="8">操作</td>
+		</tr>
+	  </thead>
+	  <tbody>
+		<?php foreach ($this->rows as $i=>$row): ?>
+		  <tr>
+		    <td>
+		    <?php 
+		    $logofile="upload_img/ids/".$row->id.".jpg";
+		    if (file_exists($logofile)) {
+		    echo "<img align='center' width='80' height='80' src='/upload_img/ids/".$row->id.".jpg'/>";
+		    } else {
+			echo "<img align='center' width='80' height='80' src='/images/caclass/default.jpg'/>";
+		    }
+		    ?>
+		    </td>  
+		    <td><?php echo $this->escape($row->id); ?></td> 
+		    <td><?php echo $this->escape($row->email); ?></td> 
+		    <td><?php 
+		    $name="姓名：".$row->lname.$row->name;
+		    echo $name;
+		    ?>
+		    </td>
+		    <td><?php echo $row->role_id; ?></td> 
+		    <td><?php echo $row->status; ?></td>  
+		    <td><a target="_blank" href="/admin/agent/role/id/<?php echo $row->id;?>">权限设置</a></td>
+		    <td><a target="_blank" href="/agent/edit/id/<?php echo $row->id;?>">编辑</a></td>
+		    <td><a target="_blank" href="/admin/master/password/id/<?php echo $row->id;?>">密码重设</a></td>
+		    <td><a href="/admin/master/top/id/<?php echo $row->id;?>">特别推荐</a></td>
+		    <td><a href="/admin/master/untop/id/<?php echo $row->id;?>">取消推荐</a></td>
+		    <td>
+		    <a target="_blank" href="/admin/master/preview/id/<?php echo $row->id;?>">预览</a>
+		    </td>
+		  </tr>
+		<?php endforeach; ?>
+	  </tbody>
+	</table><br/>
+</div>
+

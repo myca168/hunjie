@@ -1,0 +1,34 @@
+<?php 
+$this->menutitle="档案资料";
+$this->left=$this->profile();
+
+?>
+
+<br/>
+<div class='photo profile'>个人头像 (最大300KB，最小尺寸150X150px,最大尺寸200X200px. 建议150 X 150 px) :<br/><br/>
+<?php 
+$file1=$this->baseUrl()."/upload_img/ids/$this->id.jpg";
+$file2=$this->baseUrl()."/images/caclass/default.jpg";
+
+if ($this->flag=="True"){
+	$src=$file1;
+} else {$src=$file2;}
+?>
+<img alt="My Photo"  src="<?php echo $src;?>" />
+</div><br/>
+   <?php 
+   if ($this->errors){
+   echo "<span class='uploadErr'>".$this->errors."</span>";
+   }
+   ?>
+   <br/>
+   <?php 
+   echo $this->form;
+   ?>
+<br/>
+
+<style>
+#new_btn{
+*margin-left:10px;	
+}
+</style>

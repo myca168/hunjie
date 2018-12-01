@@ -1,0 +1,29 @@
+<?php 
+$this->menutitle="Set Ads Section";
+$this->left="<ul>
+				<li class='tda'>
+				<a href='javascript:window.close()'>关闭并返回上一页&gt;&gt;</a>
+				</li>
+				</ul>";
+?>
+
+<?php
+$top="No"; 
+if ($this->row->flag==2) {$top="Yes";} 
+echo "<span class='oldads'>{$this->model} ==> Current Ads Status : </span><br/><br/>";	
+echo "<span class='oldads'>Ads Start Date : {$this->row->start_date}</span><br/>";
+echo "<span class='oldads'>Ads End Date : {$this->row->end_date}</span><br/>";
+echo "<span class='oldads'>Ads On Top : $top</span><br/>";
+if ($this->type=='cs'||$this->type=='car'||$this->type=='job') {
+echo "<span class='oldads'># of Units : {$this->row->week} week(s)</span><br/>";	
+} else {
+	echo "<span class='oldads'># of Units : {$this->row->month} month(s)</span><br/><br/>";
+}
+echo $this->form;
+
+?>
+<style>
+.oldads {
+margin-left:150px;	
+}
+</style>

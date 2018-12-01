@@ -1,0 +1,73 @@
+<br/>
+<form name='searchId' action='/admin/agent/search' method='post'>
+<table class='searchById'>
+<tr class='search_head'><th>按ID或电邮搜索： 
+<input size="28" name='uid' maxlength="30">
+<input type="image" src="/images/caclass/search.gif" name="submit" id="send" /></th></tr>
+</tr>
+</table>
+</form>
+
+<br/>
+
+<?php 
+$this->menutitle=" 婚介中心";
+
+$this->left=
+"<ul>
+<li><a href='/admin/agent' class='link'><img
+src='/images/icons/lock_edit.png' class='icon' />婚介列表 </a></li>
+</ul>";
+
+?>
+
+<?php if ($this->row): ?>
+<?php 
+$row=$this->row;
+?>
+ <b><i>婚介一览表 :</i></b>
+<div class="hastable">
+<table cellspacing="0">
+	  <thead>
+		<tr>
+		<td width="12%">个人头像</td>
+		<td width="1%">ID</td>
+		<td width="30%">电邮</td>
+		<td width="20%">简介</td>
+		<td width="8%">状态</td>
+		<td colspan="7">操作</td>
+		</tr>
+	  </thead>
+	  <tbody>
+		  <tr>
+		    <td>
+		    <?php 
+		    $logofile="upload_img/ids/".$row->id.".jpg";
+		    if (file_exists($logofile)) {
+		    echo "<img align='center' width='80' height='80' src='/upload_img/ids/".$row->id.".jpg'/>";
+		    } else {
+			echo "<img align='center' width='80' height='80' src='/images/caclass/default.jpg'/>";
+		    }
+		    ?>
+		    </td>  
+		    <td><?php echo $this->escape($row->id); ?></td> 
+		    <td><?php echo $this->escape($row->email); ?></td> 
+		    <td><?php 
+		    $name="姓名：".$row->lname.$row->name;
+		    echo $name;
+		    ?>
+		    </td> 
+		    <td><?php echo $row->status; ?></td> 
+		    <td><a target="_blank" href="/agent/member/id/<?php echo $row->id;?>">会员显示</a></td>
+		    <td><a target="_blank" href="/agent/role/id/<?php echo $row->id;?>">权限设置</a></td>
+		    <td><a target="_blank" href="/agent/edit/id/<?php echo $row->id;?>">编辑</a></td>
+		    <td><a target="_blank" href="/agent/delete/id/<?php echo $row->id;?>">删除婚介</a></td>
+		    <td>
+		    <a target="_blank" href="/agent/preview/id/<?php echo $row->id;?>">预览</a>
+		    </td>
+		  </tr>
+	  </tbody>
+	</table><br/>
+</div>
+
+<?php endif;?>
